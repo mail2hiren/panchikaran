@@ -103,7 +103,7 @@
     if (parts[0] === 'glossary') bindGlossary();
     if (parts[0] === 'c' && chapterIndex(parts[1]) >= 0) startPlayer(parts[1], parts[2] === 'hide');
   }
-  window.addEventListener('hashchange', function () { stopPlayer(); widgetState = {}; quiz = null; deck = null; render(); window.scrollTo(0, 0); });
+  window.addEventListener('hashchange', function () { closeZoom(); stopPlayer(); widgetState = {}; quiz = null; deck = null; render(); window.scrollTo(0, 0); });
 
   /* ---------- Home ---------- */
   function viewHome() {
@@ -135,7 +135,9 @@
     S.visited[id] = 1; save('visited', S.visited);
     var h = '<article class="chapter"><p class="eyebrow">' + esc(ui('chapter')) + ' ' + (i + 1) + ' / ' + PK.CHAPTERS.length + '</p>' +
       '<h1>' + esc(tx(c.title)) + '</h1>';
-    h += '<div class="player"><div class="stage" id="stage"></div><div class="cap" id="cap" aria-live="polite"></div>' +
+    h += '<div class="player" id="player"><button class="zclose round" data-act="zclose" aria-label="Close">✕</button>' +
+      '<div class="stagewrap" id="stagewrap"><div class="stage" id="stage"></div><button class="zbtn" data-act="zopen" aria-label="' + esc(ui('zoom')) + '">⤢</button></div>' +
+      '<div class="zhint">' + esc(ui('zoomHint')) + '</div><div class="cap" id="cap" aria-live="polite"></div>' +
       '<div class="pctl"><button class="round" data-act="pprev" aria-label="' + esc(ui('prev')) + '">‹</button>' +
       '<div class="dots" id="dots">' + Array.apply(null, Array(sc.steps)).map(function (_, k) { return '<button data-act="pdot" data-v="' + k + '" aria-label="' + (k + 1) + '"></button>'; }).join('') + '</div>' +
       '<button class="round" id="pplay" data-act="pplay" aria-label="' + esc(ui('play')) + '">▶</button>' +
@@ -155,6 +157,75 @@
     return h;
   }
 
+  /* ---------- Zoom: full-screen picture with pinch, drag, double-tap ---------- */
+  var Z = { on: false, s: 1, x: 0, y: 0 }, ptrs = {}, pinch = null, lastTap = 0, drag = null;
+  function zApply() {
+    var st = document.getElementById('stage'); if (!st) return;
+    st.style.transform = Z.on ? 'translate(' + Z.x + 'px,' + Z.y + 'px) scale(' + Z.s + ')' : '';
+  }
+  function zAt(px, py, ns) { // zoom keeping point (px,py) of the wrapper fixed
+    ns = Math.max(1, Math.min(6, ns));
+    Z.x = px - (px - Z.x) * (ns / Z.s); Z.y = py - (py - Z.y) * (ns / Z.s); Z.s = ns;
+    if (Z.s <= 1.001) { Z.s = 1; Z.x = 0; Z.y = 0; }
+    zApply();
+  }
+  function openZoom() {
+    var pl = document.getElementById('player'); if (!pl) return;
+    Z.on = true; Z.s = 1; Z.x = 0; Z.y = 0;
+    pl.classList.add('zoomed'); document.body.classList.add('noscroll');
+    stopPlayer(); drawStep(); zApply();
+  }
+  function closeZoom() {
+    var pl = document.getElementById('player');
+    Z.on = false; Z.s = 1; Z.x = 0; Z.y = 0;
+    if (pl) pl.classList.remove('zoomed'); document.body.classList.remove('noscroll'); zApply();
+  }
+  function rel(e) { var r = document.getElementById('stagewrap').getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
+  document.addEventListener('pointerdown', function (e) {
+    if (!Z.on || !e.target.closest('#stagewrap')) return;
+    ptrs[e.pointerId] = rel(e);
+    var ids = Object.keys(ptrs);
+    if (ids.length === 2) {
+      var a = ptrs[ids[0]], b = ptrs[ids[1]];
+      pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), s: Z.s, x: Z.x, y: Z.y, mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
+      drag = null;
+    } else if (ids.length === 1) {
+      var now = Date.now(), p = ptrs[ids[0]];
+      if (now - lastTap < 300) { zAt(p.x, p.y, Z.s > 1.5 ? 1 : 2.5); lastTap = 0; }
+      else lastTap = now;
+      drag = { x: p.x, y: p.y, zx: Z.x, zy: Z.y };
+    }
+  });
+  document.addEventListener('pointermove', function (e) {
+    if (!Z.on || !(e.pointerId in ptrs)) return;
+    ptrs[e.pointerId] = rel(e);
+    var ids = Object.keys(ptrs);
+    if (ids.length === 2 && pinch) {
+      var a = ptrs[ids[0]], b = ptrs[ids[1]], d = Math.hypot(a.x - b.x, a.y - b.y);
+      var ns = Math.max(1, Math.min(6, pinch.s * d / pinch.d));
+      Z.x = pinch.mx - (pinch.mx - pinch.x) * (ns / pinch.s) + ((a.x + b.x) / 2 - pinch.mx);
+      Z.y = pinch.my - (pinch.my - pinch.y) * (ns / pinch.s) + ((a.y + b.y) / 2 - pinch.my);
+      Z.s = ns; zApply();
+    } else if (ids.length === 1 && drag && Z.s > 1) {
+      var q = ptrs[ids[0]]; Z.x = drag.zx + q.x - drag.x; Z.y = drag.zy + q.y - drag.y; zApply();
+    }
+  });
+  function ptrEnd(e) {
+    if (!(e.pointerId in ptrs)) return;
+    delete ptrs[e.pointerId];
+    if (Object.keys(ptrs).length < 2) pinch = null;
+    if (!Object.keys(ptrs).length) { drag = null; if (Z.s <= 1.01) zAt(0, 0, 1); }
+  }
+  document.addEventListener('pointerup', ptrEnd); document.addEventListener('pointercancel', ptrEnd);
+  document.addEventListener('wheel', function (e) {
+    if (!Z.on || !e.target.closest('#stagewrap')) return;
+    e.preventDefault(); var p = rel(e); zAt(p.x, p.y, Z.s * Math.exp(-e.deltaY * 0.0025));
+  }, { passive: false });
+  // tap the picture (not zoomed) to open it full screen
+  document.addEventListener('click', function (e) {
+    if (!Z.on && e.target.closest && e.target.closest('#stage')) openZoom();
+  });
+
   /* ---------- Player: steps through a scene, auto-plays ---------- */
   var PL = { id: null, step: 0, timer: null, playing: false };
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -162,7 +233,7 @@
   function drawStep() {
     var st = document.getElementById('stage'), cp = document.getElementById('cap'); if (!st) return;
     var r = scene().render(PL.step);
-    st.innerHTML = r.svg; cp.innerHTML = r.cap;
+    st.innerHTML = r.svg; cp.innerHTML = r.cap; zApply();
     var dots = document.querySelectorAll('#dots button');
     for (var k = 0; k < dots.length; k++) dots[k].className = k === PL.step ? 'on' : k < PL.step ? 'past' : '';
     var pb = document.getElementById('pplay');
@@ -189,6 +260,7 @@
   document.addEventListener('touchstart', function (e) { if (e.target.closest && e.target.closest('#stage')) touchX = e.touches[0].clientX; }, { passive: true });
   document.addEventListener('touchend', function (e) {
     if (touchX === null) return; var dx = e.changedTouches[0].clientX - touchX; touchX = null;
+    if (Z.s > 1.05) return;
     if (Math.abs(dx) > 40) go(PL.step + (dx < 0 ? 1 : -1));
   }, { passive: true });
 
@@ -538,6 +610,8 @@
       case 'layareset': widgetState.laya = 0; rerenderWidget('laya'); break;
       case 'map': widgetState.map = v; render(); break;
       case 'pnext': go(PL.step + 1); break;
+      case 'zopen': openZoom(); break;
+      case 'zclose': closeZoom(); break;
       case 'pprev': go(PL.step - 1); break;
       case 'pdot': go(v); break;
       case 'pplay': if (PL.playing) { stopPlayer(); drawStep(); } else play(); break;
@@ -558,7 +632,7 @@
   });
   document.addEventListener('keydown', function (ev) {
     if (!document.getElementById('stage') || /INPUT|SELECT|TEXTAREA/.test(ev.target.tagName)) return;
-    if (ev.key === 'ArrowRight') go(PL.step + 1); else if (ev.key === 'ArrowLeft') go(PL.step - 1);
+    if (ev.key === 'ArrowRight') go(PL.step + 1); else if (ev.key === 'ArrowLeft') go(PL.step - 1); else if (ev.key === 'Escape') closeZoom();
   });
   // keyboard access for SVG targets
   document.addEventListener('keydown', function (ev) {
