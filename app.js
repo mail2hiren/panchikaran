@@ -51,6 +51,7 @@
   function el(id) { for (var i = 0; i < PK.ELEMENTS.length; i++) if (PK.ELEMENTS[i].id === id) return PK.ELEMENTS[i]; return null; }
   function chapterIndex(id) { for (var i = 0; i < PK.CHAPTERS.length; i++) if (PK.CHAPTERS[i].id === id) return i; return -1; }
   function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  window.PKH = { esc: esc, tx: tx, ui: ui, saOf: saOf, glossOf: glossOf, term: term, script: script };
 
   /* ---------- Shell ---------- */
   var $main = document.getElementById('main');
@@ -100,21 +101,22 @@
     else html = viewHome();
     $main.innerHTML = html;
     if (parts[0] === 'glossary') bindGlossary();
+    if (parts[0] === 'c' && chapterIndex(parts[1]) >= 0) startPlayer(parts[1], parts[2] === 'hide');
   }
-  window.addEventListener('hashchange', function () { widgetState = {}; quiz = null; deck = null; render(); window.scrollTo(0, 0); });
+  window.addEventListener('hashchange', function () { stopPlayer(); widgetState = {}; quiz = null; deck = null; render(); window.scrollTo(0, 0); });
 
   /* ---------- Home ---------- */
   function viewHome() {
     var nextIdx = 0;
     for (var i = 0; i < PK.CHAPTERS.length; i++) if (!S.visited[PK.CHAPTERS[i].id]) { nextIdx = i; break; }
     var doneCount = Object.keys(S.visited).filter(function (k) { return chapterIndex(k) >= 0; }).length;
-    var h = '<section class="hero"><div class="om" aria-hidden="true">' + esc(script('ॐ')) + '</div>' +
+    var h = '<section class="hero"><div class="hero-fig">' + window.SCENES.hero() + '</div>' +
       '<h1>' + esc(ui('appName')) + '</h1><p>' + esc(ui('tagline')) + '</p>' +
       '<a class="btn primary" href="#/c/' + PK.CHAPTERS[nextIdx].id + '">' + esc(doneCount ? ui('continueL') : ui('start')) + ' →</a></section>';
     h += '<div class="progress"><span>' + esc(ui('progress')) + '</span><div class="bar"><i style="width:' + Math.round(100 * doneCount / PK.CHAPTERS.length) + '%"></i></div><b>' + doneCount + ' ' + esc(ui('of')) + ' ' + PK.CHAPTERS.length + '</b></div>';
-    h += '<ol class="chapters">' + PK.CHAPTERS.map(function (c, i) {
-      return '<li><a href="#/c/' + c.id + '"><span class="num">' + (i + 1) + '</span><span class="ct">' + esc(tx(c.title)) + '</span>' +
-        (S.visited[c.id] ? '<span class="tick" aria-label="' + esc(ui('done')) + '">✓</span>' : '<span class="chev">›</span>') + '</a></li>';
+    h += '<ol class="tiles">' + PK.CHAPTERS.map(function (c, i) {
+      return '<li><a href="#/c/' + c.id + '"><span class="thumb">' + window.SCENES[c.widget].render(window.SCENES[c.widget].steps - 1).svg + '</span>' +
+        '<span class="tt"><span class="num">' + (i + 1) + '</span>' + esc(tx(c.title)) + (S.visited[c.id] ? ' <span class="tick" aria-label="' + esc(ui('done')) + '">✓</span>' : '') + '</span></a></li>';
     }).join('') + '</ol>';
     h += settingsBlock();
     h += '<p class="note">' + esc(ui('note')) + '</p>';
@@ -127,21 +129,69 @@
   }
 
   /* ---------- Chapter ---------- */
+  var TABLE_WIDGETS = { gross: 1, subtle: 1, pranas: 1, bodies: 1, panchikarana: 1, inner: 1 };
   function viewChapter(id, hide) {
-    var i = chapterIndex(id), c = PK.CHAPTERS[i];
+    var i = chapterIndex(id), c = PK.CHAPTERS[i], sc = window.SCENES[c.widget];
     S.visited[id] = 1; save('visited', S.visited);
     var h = '<article class="chapter"><p class="eyebrow">' + esc(ui('chapter')) + ' ' + (i + 1) + ' / ' + PK.CHAPTERS.length + '</p>' +
-      '<h1>' + esc(tx(c.title)) + '</h1><p class="lead">' + esc(tx(c.intro)) + '</p>';
-    h += '<div class="widget" data-widget="' + c.widget + '">' + WIDGETS[c.widget](hide) + '</div>';
+      '<h1>' + esc(tx(c.title)) + '</h1>';
+    h += '<div class="player"><div class="stage" id="stage"></div><div class="cap" id="cap" aria-live="polite"></div>' +
+      '<div class="pctl"><button class="round" data-act="pprev" aria-label="' + esc(ui('prev')) + '">‹</button>' +
+      '<div class="dots" id="dots">' + Array.apply(null, Array(sc.steps)).map(function (_, k) { return '<button data-act="pdot" data-v="' + k + '" aria-label="' + (k + 1) + '"></button>'; }).join('') + '</div>' +
+      '<button class="round" id="pplay" data-act="pplay" aria-label="' + esc(ui('play')) + '">▶</button>' +
+      '<button class="round primary" data-act="pnext" aria-label="' + esc(ui('next')) + '">›</button></div></div>';
+    if (TABLE_WIDGETS[c.widget]) {
+      h += '<details class="more"' + (hide ? ' open' : '') + '><summary>▦ ' + esc(ui('table')) + '</summary><div class="widget" data-widget="' + c.widget + '">' + WIDGETS[c.widget](hide) + '</div></details>';
+    }
+    h += '<details class="more"><summary>¶ ' + esc(ui('read')) + '</summary><p class="lead">' + esc(tx(c.intro)) + '</p>';
     if (c.remember && c.remember.length) {
       h += '<aside class="remember"><h2>' + esc(ui('remember')) + '</h2><ul>' + c.remember.map(function (r) { return '<li>' + esc(tx(r)) + '</li>'; }).join('') + '</ul></aside>';
     }
+    h += '</details>';
     h += '<nav class="pager">' +
       (i > 0 ? '<a class="btn" href="#/c/' + PK.CHAPTERS[i - 1].id + '">← ' + esc(ui('prev')) + '</a>' : '<span></span>') +
       (i < PK.CHAPTERS.length - 1 ? '<a class="btn primary" href="#/c/' + PK.CHAPTERS[i + 1].id + '">' + esc(ui('next')) + ' →</a>' : '<a class="btn primary" href="#/practice">' + esc(ui('navPractice')) + ' →</a>') +
       '</nav></article>';
     return h;
   }
+
+  /* ---------- Player: steps through a scene, auto-plays ---------- */
+  var PL = { id: null, step: 0, timer: null, playing: false };
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function scene() { return window.SCENES[PK.CHAPTERS[chapterIndex(PL.id)].widget]; }
+  function drawStep() {
+    var st = document.getElementById('stage'), cp = document.getElementById('cap'); if (!st) return;
+    var r = scene().render(PL.step);
+    st.innerHTML = r.svg; cp.innerHTML = r.cap;
+    var dots = document.querySelectorAll('#dots button');
+    for (var k = 0; k < dots.length; k++) dots[k].className = k === PL.step ? 'on' : k < PL.step ? 'past' : '';
+    var pb = document.getElementById('pplay');
+    if (pb) { pb.textContent = PL.playing ? '❚❚' : (PL.step >= scene().steps - 1 ? '↺' : '▶'); pb.setAttribute('aria-label', ui(PL.playing ? 'pause' : 'play')); }
+  }
+  function startPlayer(id) {
+    stopPlayer(); PL.id = id; PL.step = 0; drawStep();
+    if (!reduceMotion) play();
+  }
+  function play() {
+    clearInterval(PL.timer); PL.playing = true;
+    if (PL.step >= scene().steps - 1) { PL.step = 0; }
+    drawStep();
+    PL.timer = setInterval(function () {
+      if (!document.getElementById('stage')) return stopPlayer();
+      if (PL.step >= scene().steps - 1) { stopPlayer(); drawStep(); return; }
+      PL.step++; drawStep();
+    }, 4200);
+  }
+  function stopPlayer() { clearInterval(PL.timer); PL.timer = null; PL.playing = false; }
+  function go(n) { stopPlayer(); PL.step = Math.max(0, Math.min(scene().steps - 1, n)); drawStep(); }
+  // swipe on the stage
+  var touchX = null;
+  document.addEventListener('touchstart', function (e) { if (e.target.closest && e.target.closest('#stage')) touchX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (touchX === null) return; var dx = e.changedTouches[0].clientX - touchX; touchX = null;
+    if (Math.abs(dx) > 40) go(PL.step + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
   function rerenderWidget(name) {
     var box = document.querySelector('.widget[data-widget="' + name + '"]');
     if (box) box.innerHTML = WIDGETS[name](box.querySelector('.memo.hiding') !== null);
@@ -321,24 +371,16 @@
   function viewMap() {
     var sel = widgetState.map === undefined ? 5 : widgetState.map;
     var bodyOf = ['sthula', 'sukshma', 'sukshma', 'sukshma', 'karana'];
-    var svg = '<svg viewBox="0 0 340 340" class="rings map" role="img" aria-label="' + esc(ui('navMap')) + '">';
-    PK.KOSHAS.forEach(function (k, i) {
-      var r = 160 - i * 26;
-      svg += '<g tabindex="0" class="ring' + (i === sel ? ' on' : '') + '" data-act="map" data-v="' + i + '"><circle cx="170" cy="170" r="' + r + '" style="fill:' + k.color + '"/><text x="170" y="' + (170 - r + 17) + '" text-anchor="middle">' + esc(saOf(k.id).replace(/\s.*$/, '')) + '</text></g>';
-    });
-    svg += '<g tabindex="0" class="core' + (sel === 5 ? ' on' : '') + '" data-act="map" data-v="5"><circle cx="170" cy="170" r="30"/><text x="170" y="176" text-anchor="middle">' + esc(saOf('atman')) + '</text></g>';
-    // brackets for the three bodies
-    svg += '</svg>';
     var d;
     if (sel === 5) {
-      d = term('atman', 'big') + ' = ' + term('sakshi') + ' = ' + term('brahman') + '<p>' + esc(tx(PK.CHAPTERS[chapterIndex('witness')].intro)) + '</p><a class="btn" href="#/c/witness">' + esc(ui('openChapter')) + ' →</a>';
+      d = term('atman', 'big') + ' = ' + term('sakshi') + ' = ' + term('brahman') + '<div class="maplinks"><a class="btn small" href="#/c/witness">' + esc(tx(PK.CHAPTERS[chapterIndex('witness')].title)) + ' →</a></div>';
     } else {
       var k = PK.KOSHAS[sel];
       d = term(k.id, 'big') + '<dl><dt>' + esc(ui('madeOf')) + '</dt><dd>' + esc(tx(k.made)) + '</dd><dt>' + esc(ui('belongsTo')) + '</dt><dd>' + term(bodyOf[sel]) + '</dd></dl>' +
-        '<div class="maplinks"><a class="btn small" href="#/c/koshas">' + esc(saOf('annamaya').split(' ').pop()) + ' →</a><a class="btn small" href="#/c/bodies">' + esc(saOf(bodyOf[sel])) + ' →</a></div>';
+        (k.parts.length ? '<div class="parts">' + k.parts.map(function (p) { return '<span class="chip">' + esc(saOf(p)) + '</span>'; }).join('') + '</div>' : '') +
+        '<div class="maplinks"><a class="btn small" href="#/c/koshas">' + esc(tx(PK.CHAPTERS[chapterIndex('koshas')].title)) + ' →</a></div>';
     }
-    var legend = '<div class="bodylegend">' + [['sthula', '1'], ['sukshma', '2 · 3 · 4'], ['karana', '5']].map(function (b) { return '<div>' + term(b[0]) + '<span>' + b[1] + '</span></div>'; }).join('') + '</div>';
-    return '<h1>' + esc(ui('navMap')) + '</h1><p class="lead">' + esc(ui('mapIntro')) + '</p><div class="koshas">' + svg + '<div class="detail">' + d + '</div></div>' + legend;
+    return '<h1>' + esc(ui('navMap')) + '</h1><p class="muted">' + esc(ui('mapIntro')) + '</p><div class="mapwrap">' + window.SCENES.map(sel) + '</div><div class="detail" style="--c:' + (sel === 5 ? '#F4C430' : PK.KOSHAS[sel].color) + '">' + d + '</div>';
   }
 
   /* ---------- Practice: facts ---------- */
@@ -495,6 +537,10 @@
       case 'laya': widgetState.laya = Math.min(3, (widgetState.laya || 0) + 1); rerenderWidget('laya'); break;
       case 'layareset': widgetState.laya = 0; rerenderWidget('laya'); break;
       case 'map': widgetState.map = v; render(); break;
+      case 'pnext': go(PL.step + 1); break;
+      case 'pprev': go(PL.step - 1); break;
+      case 'pdot': go(v); break;
+      case 'pplay': if (PL.playing) { stopPlayer(); drawStep(); } else play(); break;
       case 'flip': deck.flipped = true; render(); break;
       case 'knew': { var f = deck.queue.shift(); S.boxes[f.id] = Math.min(5, (S.boxes[f.id] || 0) + 1); save('boxes', S.boxes); deck.flipped = false; render(); break; }
       case 'again': { var g = deck.queue.shift(); S.boxes[g.id] = 0; save('boxes', S.boxes); deck.queue.push(g); deck.flipped = false; render(); break; }
@@ -509,6 +555,10 @@
   });
   document.addEventListener('change', function (ev) {
     if (ev.target.matches('[data-act="roman"]')) { S.roman = ev.target.checked; save('roman', S.roman); render(); }
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (!document.getElementById('stage') || /INPUT|SELECT|TEXTAREA/.test(ev.target.tagName)) return;
+    if (ev.key === 'ArrowRight') go(PL.step + 1); else if (ev.key === 'ArrowLeft') go(PL.step - 1);
   });
   // keyboard access for SVG targets
   document.addEventListener('keydown', function (ev) {
