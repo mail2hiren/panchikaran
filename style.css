@@ -424,3 +424,14 @@ details.more[open] { padding-bottom: 14px; }
 .player.zoomed .zclose { display: grid; position: absolute; top: max(12px, env(safe-area-inset-top)); right: 12px; z-index: 2; }
 .player.zoomed .zhint { display: none; }
 body.noscroll { overflow: hidden; }
+
+/* Narration */
+.startov { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; border: 0; cursor: pointer; background: color-mix(in srgb, var(--surface) 35%, transparent); color: var(--ink); font: inherit; font-weight: 700; font-size: 1.05rem; backdrop-filter: blur(1px); }
+.startov .pbig { width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); font-size: 2.2rem; padding-left: 6px; box-shadow: 0 6px 24px rgba(194,85,31,.45); animation: breathe 2.4s ease-in-out infinite; }
+.startov span:last-child { background: var(--surface); padding: 4px 14px; border-radius: 999px; }
+.player.started .startov { display: none; }
+.sub { margin: -4px 4px 10px; padding: 10px 12px; border-radius: 12px; background: var(--surface2); color: var(--ink); font-size: .98rem; line-height: 1.55; text-align: left; }
+.sub:empty { display: none; }
+#pvoice { color: var(--accent); }
+#pvoice.off { color: var(--muted); }
+.player.zoomed .sub { max-height: 22vh; overflow: auto; }

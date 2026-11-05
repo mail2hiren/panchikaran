@@ -103,7 +103,7 @@
     if (parts[0] === 'glossary') bindGlossary();
     if (parts[0] === 'c' && chapterIndex(parts[1]) >= 0) startPlayer(parts[1], parts[2] === 'hide');
   }
-  window.addEventListener('hashchange', function () { closeZoom(); stopPlayer(); widgetState = {}; quiz = null; deck = null; render(); window.scrollTo(0, 0); });
+  window.addEventListener('hashchange', function () { closeZoom(); if (typeof stopPlayer === 'function') stopPlayer(); widgetState = {}; quiz = null; deck = null; render(); window.scrollTo(0, 0); });
 
   /* ---------- Home ---------- */
   function viewHome() {
@@ -136,10 +136,12 @@
     var h = '<article class="chapter"><p class="eyebrow">' + esc(ui('chapter')) + ' ' + (i + 1) + ' / ' + PK.CHAPTERS.length + '</p>' +
       '<h1>' + esc(tx(c.title)) + '</h1>';
     h += '<div class="player" id="player"><button class="zclose round" data-act="zclose" aria-label="Close">✕</button>' +
-      '<div class="stagewrap" id="stagewrap"><div class="stage" id="stage"></div><button class="zbtn" data-act="zopen" aria-label="' + esc(ui('zoom')) + '">⤢</button></div>' +
-      '<div class="zhint">' + esc(ui('zoomHint')) + '</div><div class="cap" id="cap" aria-live="polite"></div>' +
+      '<div class="stagewrap" id="stagewrap"><div class="stage" id="stage"></div><button class="zbtn" data-act="zopen" aria-label="' + esc(ui('zoom')) + '">⤢</button>' +
+      '<button class="startov" data-act="pplay"><span class="pbig">▶</span><span>' + esc(ui('listen')) + '</span></button></div>' +
+      '<div class="zhint">' + esc(ui('zoomHint')) + '</div><div class="cap" id="cap" aria-live="polite"></div><p class="sub" id="sub"></p>' +
       '<div class="pctl"><button class="round" data-act="pprev" aria-label="' + esc(ui('prev')) + '">‹</button>' +
       '<div class="dots" id="dots">' + Array.apply(null, Array(sc.steps)).map(function (_, k) { return '<button data-act="pdot" data-v="' + k + '" aria-label="' + (k + 1) + '"></button>'; }).join('') + '</div>' +
+      '<button class="round" id="pvoice" data-act="voice" aria-label="' + esc(ui('voice')) + '"></button>' +
       '<button class="round" id="pplay" data-act="pplay" aria-label="' + esc(ui('play')) + '">▶</button>' +
       '<button class="round primary" data-act="pnext" aria-label="' + esc(ui('next')) + '">›</button></div></div>';
     if (TABLE_WIDGETS[c.widget]) {
@@ -172,8 +174,7 @@
   function openZoom() {
     var pl = document.getElementById('player'); if (!pl) return;
     Z.on = true; Z.s = 1; Z.x = 0; Z.y = 0;
-    pl.classList.add('zoomed'); document.body.classList.add('noscroll');
-    stopPlayer(); drawStep(); zApply();
+    pl.classList.add('zoomed'); document.body.classList.add('noscroll'); zApply();
   }
   function closeZoom() {
     var pl = document.getElementById('player');
@@ -226,35 +227,107 @@
     if (!Z.on && e.target.closest && e.target.closest('#stage')) openZoom();
   });
 
-  /* ---------- Player: steps through a scene, auto-plays ---------- */
-  var PL = { id: null, step: 0, timer: null, playing: false };
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* ---------- Narration: recorded audio when present, else the device voice ---------- */
+  var VOICE = { on: load('voice', true), audio: null, cues: null, token: 0, src: '' };
+  var LANGTAG = { en: 'en-IN', hi: 'hi-IN', gu: 'gu-IN', mr: 'mr-IN' };
+  var MALE = /(male|madhur|prabhat|niranjan|manohar|rishi|hemant|ravi|kunal|aarav|arjun|prakash|rahul)/i;
+  try { fetch('audio/cues.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { VOICE.cues = j; }).catch(function () {}); } catch (e) { /* offline */ }
+  function narrText() { var n = window.NARR && window.NARR[PL.id]; return n && n[PL.step] ? tx(n[PL.step]) : ''; }
+  function pickVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    var tag = LANGTAG[S.lang], base = tag.slice(0, 2);
+    var vs = speechSynthesis.getVoices().filter(function (v) { return (v.lang || '').replace('_', '-').toLowerCase().indexOf(base) === 0; });
+    if (!vs.length) return null;
+    vs.sort(function (a, b) {
+      function score(v) { return (MALE.test(v.name) ? 4 : 0) + ((v.lang || '').replace('_', '-').toLowerCase() === tag.toLowerCase() ? 2 : 0) + (v.localService ? 0 : 1); }
+      return score(b) - score(a);
+    });
+    return vs[0];
+  }
+  if ('speechSynthesis' in window) { try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = function () {}; } catch (e) { /* ignore */ } }
+  function hush() {
+    VOICE.token++;
+    if (VOICE.audio) { try { VOICE.audio.pause(); } catch (e) { /* ignore */ } }
+    if ('speechSynthesis' in window) { try { speechSynthesis.cancel(); } catch (e) { /* ignore */ } }
+  }
+  // Speak the current step; call done() when finished (or after a reading pause when silent).
+  function speak(done) {
+    hush();
+    var my = VOICE.token, text = narrText();
+    function fin() { if (my === VOICE.token && done) done(); }
+    function silent() { setTimeout(fin, Math.max(4200, text.length * 55)); }
+    if (!VOICE.on || !text) return silent();
+    var cue = VOICE.cues && VOICE.cues[S.lang] && VOICE.cues[S.lang][PL.id];
+    if (cue && cue.t && cue.t[PL.step] !== undefined) {
+      if (!VOICE.audio) VOICE.audio = new Audio();
+      var au = VOICE.audio, src = 'audio/' + S.lang + '/' + PL.id + '.mp3?v=' + (VOICE.cues.v || 1);
+      var start = cue.t[PL.step], end = cue.e[PL.step];
+      var go2 = function () {
+        try { au.currentTime = start; } catch (e) { /* not seekable yet */ }
+        au.ontimeupdate = function () { if (my !== VOICE.token) return; if (au.currentTime >= end) { au.pause(); au.ontimeupdate = null; fin(); } };
+        au.onended = fin;
+        var pr = au.play(); if (pr && pr.catch) pr.catch(function () { silent(); });
+      };
+      if (VOICE.src !== src) { VOICE.src = src; au.src = src; au.preload = 'auto'; au.addEventListener('loadedmetadata', function h() { au.removeEventListener('loadedmetadata', h); if (my === VOICE.token) go2(); }); au.load(); }
+      else go2();
+      return;
+    }
+    var v = pickVoice();
+    if (!v) return silent();
+    try {
+      var u = new SpeechSynthesisUtterance(text);
+      u.voice = v; u.lang = v.lang; u.rate = 0.92;
+      u.onend = fin; u.onerror = function () { silent(); };
+      speechSynthesis.speak(u);
+    } catch (e) { silent(); }
+  }
+
+  /* ---------- Player: steps through a scene with narration ---------- */
+  var PL = { id: null, step: 0, playing: false, started: false };
   function scene() { return window.SCENES[PK.CHAPTERS[chapterIndex(PL.id)].widget]; }
   function drawStep() {
     var st = document.getElementById('stage'), cp = document.getElementById('cap'); if (!st) return;
     var r = scene().render(PL.step);
     st.innerHTML = r.svg; cp.innerHTML = r.cap; zApply();
+    var sb = document.getElementById('sub'); if (sb) sb.textContent = narrText();
     var dots = document.querySelectorAll('#dots button');
     for (var k = 0; k < dots.length; k++) dots[k].className = k === PL.step ? 'on' : k < PL.step ? 'past' : '';
     var pb = document.getElementById('pplay');
-    if (pb) { pb.textContent = PL.playing ? '❚❚' : (PL.step >= scene().steps - 1 ? '↺' : '▶'); pb.setAttribute('aria-label', ui(PL.playing ? 'pause' : 'play')); }
+    if (pb) { pb.textContent = PL.playing ? '❚❚' : (PL.step >= scene().steps - 1 && PL.started ? '↺' : '▶'); pb.setAttribute('aria-label', ui(PL.playing ? 'pause' : 'play')); }
+    var vb = document.getElementById('pvoice');
+    if (vb) { vb.innerHTML = speakerIcon(VOICE.on); vb.classList.toggle('off', !VOICE.on); vb.setAttribute('aria-pressed', VOICE.on ? 'true' : 'false'); }
+    var pl = document.getElementById('player'); if (pl) pl.classList.toggle('started', PL.started);
+  }
+  function speakerIcon(on) {
+    return '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/>' +
+      (on ? '<path d="M16 9a4 4 0 0 1 0 6"/><path d="M18.5 6.5a8 8 0 0 1 0 11"/>' : '<path d="M17 9l5 6M22 9l-5 6"/>') + '</svg>';
   }
   function startPlayer(id) {
-    stopPlayer(); PL.id = id; PL.step = 0; drawStep();
-    if (!reduceMotion) play();
+    stopPlayer(); PL.id = id; PL.step = 0; PL.started = false; drawStep();
   }
   function play() {
-    clearInterval(PL.timer); PL.playing = true;
-    if (PL.step >= scene().steps - 1) { PL.step = 0; }
-    drawStep();
-    PL.timer = setInterval(function () {
-      if (!document.getElementById('stage')) return stopPlayer();
-      if (PL.step >= scene().steps - 1) { stopPlayer(); drawStep(); return; }
-      PL.step++; drawStep();
-    }, 4200);
+    hush(); PL.playing = true; PL.started = true;
+    if (PL.step >= scene().steps - 1 && PL._ended) PL.step = 0;
+    PL._ended = false;
+    step();
+    function step() {
+      if (!PL.playing || !document.getElementById('stage')) return;
+      drawStep();
+      speak(function () {
+        setTimeout(function () {
+          if (!PL.playing) return;
+          if (PL.step >= scene().steps - 1) { PL.playing = false; PL._ended = true; drawStep(); return; }
+          PL.step++; step();
+        }, 700);
+      });
+    }
   }
-  function stopPlayer() { clearInterval(PL.timer); PL.timer = null; PL.playing = false; }
-  function go(n) { stopPlayer(); PL.step = Math.max(0, Math.min(scene().steps - 1, n)); drawStep(); }
+  function stopPlayer() { PL.playing = false; hush(); }
+  // Manual move: show that step and read it once
+  function go(n) {
+    stopPlayer(); PL.started = true; PL.step = Math.max(0, Math.min(scene().steps - 1, n)); drawStep();
+    speak(null);
+  }
   // swipe on the stage
   var touchX = null;
   document.addEventListener('touchstart', function (e) { if (e.target.closest && e.target.closest('#stage')) touchX = e.touches[0].clientX; }, { passive: true });
@@ -615,6 +688,7 @@
       case 'pprev': go(PL.step - 1); break;
       case 'pdot': go(v); break;
       case 'pplay': if (PL.playing) { stopPlayer(); drawStep(); } else play(); break;
+      case 'voice': VOICE.on = !VOICE.on; save('voice', VOICE.on); if (!VOICE.on) hush(); else if (!PL.playing) speak(null); drawStep(); if (PL.playing) { stopPlayer(); play(); } break;
       case 'flip': deck.flipped = true; render(); break;
       case 'knew': { var f = deck.queue.shift(); S.boxes[f.id] = Math.min(5, (S.boxes[f.id] || 0) + 1); save('boxes', S.boxes); deck.flipped = false; render(); break; }
       case 'again': { var g = deck.queue.shift(); S.boxes[g.id] = 0; save('boxes', S.boxes); deck.queue.push(g); deck.flipped = false; render(); break; }
