@@ -1,6 +1,6 @@
 # Panchikarana
 
-A visual, mobile-first guide to Panchikarana: the five elements, the three gunas, the five-fold mixing, the gross and subtle bodies, the inner instrument, the five pranas, the three bodies, the five sheaths, the witness, and the return to the source through Om.
+A visual, mobile-first guide to Panchikarana: the qualifications of the seeker, the five elements, the three gunas, the five-fold mixing, the gross and subtle bodies, the inner instrument, the five pranas, the three bodies, the five sheaths, Sat-Chit-Ānanda, the witness, the return to the source through Om, and Om Tat Sat with the great sayings. Most chapters also have an animated, narrated story from the Upanishads.
 
 Languages: English, हिन्दी, ગુજરાતી, मराठी.
 
@@ -12,7 +12,10 @@ Plain HTML, CSS and JavaScript with no build step, so GitHub Pages serves it as 
 |---|---|
 | `data.js` | All content: terms, tables, chapter text in four languages |
 | `i18n.js` | Interface text in four languages, Devanagari → Gujarati script conversion |
-| `app.js` | Router, interactive diagrams, flashcards, quiz, glossary |
+| `narr.js` | Spoken narration per animation step (chapters and stories) |
+| `scenes.js`, `scenes2.js` | Animated scenes and stories |
+| `app.js` | Router, player with explanation and story tabs, interactive diagrams, flashcards, quiz, glossary |
+| `tools/make_audio.py` | Generates recorded narration for new text |
 | `style.css` | Layout, light and dark themes |
 | `sw.js` | Network-first offline cache (always shows the latest deploy when online) |
 

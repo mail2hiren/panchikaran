@@ -365,8 +365,202 @@
       ] }
   ];
 
+
+  /* ================= v2 additions: the seeker, Sat-Chit-Ānanda, Om Tat Sat, stories, verses ================= */
+
+  // The seeker (sādhana-catuṣṭaya and anubandha-catuṣṭaya)
+  T('viveka', 'विवेक', 'viveka', ['discernment', 'विवेक', 'વિવેક', 'विवेक']);
+  T('vairagya', 'वैराग्य', 'vairāgya', ['dispassion', 'वैराग्य', 'વૈરાગ્ય', 'वैराग्य']);
+  T('shatsampatti', 'षट्सम्पत्ति', 'ṣaṭ-sampatti', ['the six treasures', 'छह संपत्तियाँ', 'છ સંપત્તિ', 'सहा संपत्ती']);
+  T('shama', 'शम', 'śama', ['mastery of mind', 'मन का संयम', 'મનનો સંયમ', 'मनाचा संयम']);
+  T('dama', 'दम', 'dama', ['mastery of senses', 'इंद्रिय-संयम', 'ઇન્દ્રિય-સંયમ', 'इंद्रिय-संयम']);
+  T('uparati', 'उपरति', 'uparati', ['withdrawal / own duty', 'उपरति (स्वधर्म)', 'ઉપરતિ (સ્વધર્મ)', 'उपरती (स्वधर्म)']);
+  T('titiksha', 'तितिक्षा', 'titikṣā', ['endurance', 'सहनशीलता', 'સહનશીલતા', 'सहनशीलता']);
+  T('shraddha', 'श्रद्धा', 'śraddhā', ['faith', 'श्रद्धा', 'શ્રદ્ધા', 'श्रद्धा']);
+  T('samadhana', 'समाधान', 'samādhāna', ['one-pointed mind', 'एकाग्रता', 'એકાગ્રતા', 'एकाग्रता']);
+  T('mumukshutva', 'मुमुक्षुत्व', 'mumukṣutva', ['longing for freedom', 'मुक्ति की इच्छा', 'મુક્તિની ઇચ્છા', 'मुक्तीची इच्छा']);
+  T('adhikari', 'अधिकारी', 'adhikārī', ['the fit student', 'योग्य साधक', 'યોગ્ય સાધક', 'योग्य साधक']);
+  T('vishaya', 'विषय', 'viṣaya', ['subject', 'विषय', 'વિષય', 'विषय']);
+  T('prayojana', 'प्रयोजन', 'prayojana', ['purpose', 'प्रयोजन', 'પ્રયોજન', 'प्रयोजन']);
+  T('sambandha', 'सम्बन्ध', 'sambandha', ['connection', 'संबंध', 'સંબંધ', 'संबंध']);
+  T('shravana', 'श्रवण', 'śravaṇa', ['hearing', 'सुनना', 'સાંભળવું', 'ऐकणे']);
+  T('manana', 'मनन', 'manana', ['reflecting', 'मनन (विचार)', 'મનન (વિચાર)', 'मनन (विचार)']);
+  T('nididhyasana', 'निदिध्यासन', 'nididhyāsana', ['contemplating', 'निदिध्यासन (ध्यान)', 'નિદિધ્યાસન (ધ્યાન)', 'निदिध्यासन (ध्यान)']);
+  T('guru', 'गुरु', 'guru', ['teacher', 'गुरु', 'ગુરુ', 'गुरु']);
+  T('shreyas', 'श्रेयस्', 'śreyas', ['the good', 'कल्याणकारी', 'કલ્યાણકારી', 'कल्याणकारी']);
+  T('preyas', 'प्रेयस्', 'preyas', ['the pleasant', 'प्रिय लगने वाला', 'ગમતું', 'आवडणारे']);
+
+  // Sat-Chit-Ānanda
+  T('sat', 'सत्', 'sat', ['existence', 'अस्तित्व', 'અસ્તિત્વ', 'अस्तित्व']);
+  T('chit', 'चित्', 'cit', ['awareness', 'चेतना', 'ચેતના', 'चेतना']);
+  T('ananda', 'आनन्द', 'ānanda', ['fullness', 'पूर्णता', 'પૂર્ણતા', 'पूर्णता']);
+  T('satchitananda', 'सच्चिदानन्द', 'saccidānanda', ['existence · awareness · fullness', 'सत् · चित् · आनंद', 'સત્ · ચિત્ · આનંદ', 'सत् · चित् · आनंद']);
+  T('asti', 'अस्ति', 'asti', ['it is', 'है', 'છે', 'आहे']);
+  T('bhati', 'भाति', 'bhāti', ['it shines', 'भासता है', 'ભાસે છે', 'भासते']);
+  T('priya', 'प्रिय', 'priya', ['it is dear', 'प्रिय है', 'પ્રિય છે', 'प्रिय आहे']);
+  T('nama', 'नाम', 'nāma', ['name', 'नाम', 'નામ', 'नाव']);
+  T('akara', 'रूप', 'rūpa', ['shape', 'आकार', 'આકાર', 'आकार']);
+  T('asat', 'असत्', 'asat', ['changing, unreal', 'असत्', 'અસત્', 'असत्']);
+  T('jada', 'जड', 'jaḍa', ['inert', 'जड़', 'જડ', 'जड']);
+  T('duhkha', 'दुःख', 'duḥkha', ['sorrow, limited', 'दुःख', 'દુઃખ', 'दुःख']);
+  T('anatma', 'अनात्मा', 'anātmā', ['the not-Self', 'अनात्मा', 'અનાત્મા', 'अनात्मा']);
+  T('svarupa', 'स्वरूप लक्षण', 'svarūpa lakṣaṇa', ['definition by nature', 'स्वरूप लक्षण', 'સ્વરૂપ લક્ષણ', 'स्वरूप लक्षण']);
+  T('tatastha', 'तटस्थ लक्षण', 'taṭastha lakṣaṇa', ['definition by function', 'तटस्थ लक्षण', 'તટસ્થ લક્ષણ', 'तटस्थ लक्षण']);
+
+  // Om Tat Sat, great sayings, method
+  T('tat', 'तत्', 'tat', ['That', 'वह', 'તે', 'ते']);
+  T('mahavakya', 'महावाक्य', 'mahāvākya', ['great saying', 'महावाक्य', 'મહાવાક્ય', 'महावाक्य']);
+  T('mv1', 'प्रज्ञानं ब्रह्म', 'prajñānaṃ brahma', ['Consciousness is Brahman', 'प्रज्ञान ब्रह्म है', 'પ્રજ્ઞાન બ્રહ્મ છે', 'प्रज्ञान ब्रह्म आहे']);
+  T('mv2', 'अहं ब्रह्मास्मि', 'ahaṃ brahmāsmi', ['I am Brahman', 'मैं ब्रह्म हूँ', 'હું બ્રહ્મ છું', 'मी ब्रह्म आहे']);
+  T('mv3', 'तत्त्वमसि', 'tat tvam asi', ['You are That', 'वह तुम हो', 'તે તું છે', 'ते तू आहेस']);
+  T('mv4', 'अयमात्मा ब्रह्म', 'ayam ātmā brahma', ['This Self is Brahman', 'यह आत्मा ब्रह्म है', 'આ આત્મા બ્રહ્મ છે', 'हा आत्मा ब्रह्म आहे']);
+  T('adhyaropa', 'अध्यारोप', 'adhyāropa', ['laying on', 'आरोपण', 'આરોપણ', 'आरोपण']);
+  T('apavada', 'अपवाद', 'apavāda', ['taking back', 'निषेध', 'નિષેધ', 'निषेध']);
+  T('avarana', 'आवरण', 'āvaraṇa', ['veiling', 'ढकना', 'ઢાંકવું', 'झाकणे']);
+  T('vikshepa', 'विक्षेप', 'vikṣepa', ['projecting', 'प्रक्षेप', 'પ્રક્ષેપ', 'प्रक्षेप']);
+  T('adhyatma', 'अध्यात्म', 'adhyātma', ['the organ', 'इंद्रिय', 'ઇન્દ્રિય', 'इंद्रिय']);
+  T('adhibhuta', 'अधिभूत', 'adhibhūta', ['its object', 'विषय', 'વિષય', 'विषय']);
+  T('adhidaiva', 'अधिदैव', 'adhidaiva', ['presiding deity', 'अधिष्ठाता देवता', 'અધિષ્ઠાતા દેવતા', 'अधिष्ठाता देवता']);
+
+  /* ---------- The four qualifications: table ---------- */
+  var SADHANA = [
+    { id: 'viveka', n: 1,
+      mean: ['telling the eternal from the passing', 'नित्य और अनित्य का भेद', 'નિત્ય અને અનિત્યનો ભેદ', 'नित्य आणि अनित्य यांतील भेद'],
+      img: ['the swan: drinks the milk, leaves the water', 'हंस: दूध पी लेता है, पानी छोड़ देता है', 'હંસ: દૂધ પી લે છે, પાણી છોડી દે છે', 'हंस: दूध पितो, पाणी सोडतो'] },
+    { id: 'vairagya', n: 2,
+      mean: ['no craving for enjoyment, here or in heaven', 'इस लोक और परलोक के भोगों से विरक्ति', 'આ લોક અને પરલોકના ભોગોથી વિરક્તિ', 'इहलोक आणि परलोकातील भोगांपासून विरक्ती'],
+      img: ['Nachiketa refuses Yama\'s gifts', 'नचिकेता यम के उपहार ठुकराता है', 'નચિકેતા યમની ભેટો ઠુકરાવે છે', 'नचिकेत यमाच्या भेटी नाकारतो'] },
+    { id: 'shama', n: 3,
+      mean: ['mastery of the mind', 'मन का संयम', 'મનનો સંયમ', 'मनाचा संयम'],
+      img: ['a lamp where no wind blows (Gītā 6.19)', 'निर्वात स्थान में दीपक (गीता 6.19)', 'પવન વગરની જગ્યાએ દીવો (ગીતા 6.19)', 'निर्वात जागी दिवा (गीता 6.19)'] },
+    { id: 'dama', n: 3,
+      mean: ['mastery of the senses', 'इंद्रियों का संयम', 'ઇન્દ્રિયોનો સંયમ', 'इंद्रियांचा संयम'],
+      img: ['the tortoise draws in its limbs (Gītā 2.58)', 'कछुआ अपने अंग समेटता है (गीता 2.58)', 'કાચબો અંગ સંકેલી લે છે (ગીતા 2.58)', 'कासव अवयव आत ओढून घेते (गीता 2.58)'] },
+    { id: 'uparati', n: 3,
+      mean: ['following one\'s own duty; not leaning outward', 'स्वधर्म का पालन; बाहर न झुकना', 'સ્વધર્મનું પાલન; બહાર ન ઝૂકવું', 'स्वधर्माचे पालन; बाहेर न झुकणे'],
+      img: ['stepping back from the crowd', 'भीड़ से पीछे हट जाना', 'ભીડમાંથી પાછળ હટી જવું', 'गर्दीतून मागे होणे'] },
+    { id: 'titiksha', n: 3,
+      mean: ['bearing heat and cold, praise and blame', 'सर्दी-गर्मी, मान-अपमान सहना', 'ઠંડી-ગરમી, માન-અપમાન સહેવાં', 'थंडी-ऊन, मान-अपमान सहन करणे'],
+      img: ['a tree, the same in sun and rain', 'धूप और वर्षा में एक-सा वृक्ष', 'તડકા અને વરસાદમાં એકસરખું વૃક્ષ', 'ऊन-पावसात सारखाच राहणारा वृक्ष'] },
+    { id: 'shraddha', n: 3,
+      mean: ['trust in the teacher and the scripture', 'गुरु और शास्त्र पर विश्वास', 'ગુરુ અને શાસ્ત્ર પર વિશ્વાસ', 'गुरु आणि शास्त्र यांवर विश्वास'],
+      img: ['Satyakāma Jābāla (Chāndogya 4.4)', 'सत्यकाम जाबाल (छांदोग्य 4.4)', 'સત્યકામ જાબાલ (છાંદોગ્ય 4.4)', 'सत्यकाम जाबाल (छांदोग्य 4.4)'] },
+    { id: 'samadhana', n: 3,
+      mean: ['a mind gathered on one point', 'एक बिंदु पर एकाग्र मन', 'એક બિંદુ પર એકાગ્ર મન', 'एका बिंदूवर एकाग्र मन'],
+      img: ['Arjuna sees only the bird\'s eye', 'अर्जुन को केवल पक्षी की आँख दिखती है', 'અર્જુનને માત્ર પક્ષીની આંખ દેખાય છે', 'अर्जुनाला फक्त पक्ष्याचा डोळा दिसतो'] },
+    { id: 'mumukshutva', n: 4,
+      mean: ['a burning wish to be free', 'मुक्ति की तीव्र इच्छा', 'મુક્તિની તીવ્ર ઇચ્છા', 'मुक्तीची तीव्र इच्छा'],
+      img: ['one whose hair is on fire runs for water', 'जिसके बालों में आग लगी हो, वह पानी की ओर दौड़ता है', 'જેના વાળમાં આગ લાગી હોય, તે પાણી તરફ દોડે છે', 'ज्याच्या केसांना आग लागली, तो पाण्याकडे धावतो'] }
+  ];
+
+  /* ---------- New chapters ---------- */
+  var CH_SEEKER = { id: 'seeker', widget: 'seeker',
+    title: ['Before we begin: the seeker', 'आरंभ से पहले: साधक', 'શરૂઆત પહેલાં: સાધક', 'सुरुवातीपूर्वी: साधक'],
+    intro: [
+      'Vedānta is taught to a prepared student, the adhikārī. Tattvabodha and Vivekacūḍāmaṇi name four qualifications (sādhana-catuṣṭaya): discernment (viveka), dispassion (vairāgya), the six treasures beginning with calm (śamādi-ṣaṭka-sampatti) and the longing for freedom (mumukṣutva). The student goes to a teacher who knows the scripture and abides in Brahman, with humility, questions and service, and learns by hearing, reflecting and contemplating.',
+      'वेदांत एक तैयार शिष्य, अधिकारी, को सिखाया जाता है। तत्त्वबोध और विवेकचूडामणि चार योग्यताएँ (साधन-चतुष्टय) बताते हैं: विवेक, वैराग्य, शम से आरंभ होने वाली छह संपत्तियाँ (शमादि-षट्क-संपत्ति), और मुक्ति की इच्छा (मुमुक्षुत्व)। शिष्य विनम्रता, प्रश्न और सेवा के साथ ऐसे गुरु के पास जाता है जो शास्त्र जानते हैं और ब्रह्म में स्थित हैं, और श्रवण, मनन, निदिध्यासन से सीखता है।',
+      'વેદાંત તૈયાર શિષ્ય, અધિકારી, ને શીખવાય છે. તત્ત્વબોધ અને વિવેકચૂડામણિ ચાર યોગ્યતા (સાધન-ચતુષ્ટય) કહે છે: વિવેક, વૈરાગ્ય, શમથી શરૂ થતી છ સંપત્તિ (શમાદિ-ષટ્ક-સંપત્તિ), અને મુક્તિની ઇચ્છા (મુમુક્ષુત્વ). શિષ્ય નમ્રતા, પ્રશ્ન અને સેવા સાથે એવા ગુરુ પાસે જાય છે જે શાસ્ત્ર જાણે છે અને બ્રહ્મમાં સ્થિત છે, અને શ્રવણ, મનન, નિદિધ્યાસનથી શીખે છે.',
+      'वेदांत तयार शिष्याला, अधिकाऱ्याला, शिकवला जातो. तत्त्वबोध आणि विवेकचूडामणी चार पात्रता (साधन-चतुष्टय) सांगतात: विवेक, वैराग्य, शमापासून सुरू होणाऱ्या सहा संपत्ती (शमादि-षट्क-संपत्ती), आणि मुक्तीची इच्छा (मुमुक्षुत्व). शिष्य नम्रता, प्रश्न आणि सेवा घेऊन अशा गुरूंकडे जातो जे शास्त्र जाणतात आणि ब्रह्मात स्थित आहेत, आणि श्रवण, मनन, निदिध्यासन यांनी शिकतो.'],
+    remember: [
+      ['Four steps: viveka → vairāgya → six treasures → mumukṣutva.', 'चार सोपान: विवेक → वैराग्य → षट्संपत्ति → मुमुक्षुत्व।', 'ચાર પગથિયાં: વિવેક → વૈરાગ્ય → ષટ્સંપત્તિ → મુમુક્ષુત્વ.', 'चार पायऱ्या: विवेक → वैराग्य → षट्संपत्ती → मुमुक्षुत्व.'],
+      ['Six treasures: śama (mind) · dama (senses) · uparati · titikṣā (endurance) · śraddhā (faith) · samādhāna (focus).', 'छह संपत्तियाँ: शम (मन) · दम (इंद्रियाँ) · उपरति · तितिक्षा (सहनशीलता) · श्रद्धा · समाधान (एकाग्रता)।', 'છ સંપત્તિ: શમ (મન) · દમ (ઇન્દ્રિયો) · ઉપરતિ · તિતિક્ષા (સહનશીલતા) · શ્રદ્ધા · સમાધાન (એકાગ્રતા).', 'सहा संपत्ती: शम (मन) · दम (इंद्रिये) · उपरती · तितिक्षा (सहनशीलता) · श्रद्धा · समाधान (एकाग्रता).'],
+      ['Uparati: Tattvabodha calls it following one\'s own dharma; Vivekacūḍāmaṇi calls it the mind no longer leaning on outer things. Follow your book.', 'उपरति: तत्त्वबोध इसे स्वधर्म का पालन कहता है; विवेकचूडामणि कहता है कि मन बाहरी वस्तुओं पर टिकना छोड़ दे। अपने ग्रंथ का अनुसरण करें।', 'ઉપરતિ: તત્ત્વબોધ તેને સ્વધર્મનું પાલન કહે છે; વિવેકચૂડામણિ કહે છે કે મન બહારની વસ્તુઓ પર ટકવાનું છોડી દે. તમારા ગ્રંથને અનુસરો.', 'उपरती: तत्त्वबोध तिला स्वधर्माचे पालन म्हणतो; विवेकचूडामणी म्हणतो की मन बाह्य वस्तूंवर टेकणे सोडते. आपल्या ग्रंथाचे अनुसरण करा.'],
+      ['The four preliminaries: adhikārī (who) · viṣaya (what) · prayojana (why) · sambandha (the link).', 'चार अनुबंध: अधिकारी (कौन) · विषय (क्या) · प्रयोजन (क्यों) · संबंध (जोड़)।', 'ચાર અનુબંધ: અધિકારી (કોણ) · વિષય (શું) · પ્રયોજન (શા માટે) · સંબંધ (જોડાણ).', 'चार अनुबंध: अधिकारी (कोण) · विषय (काय) · प्रयोजन (का) · संबंध (दुवा).'],
+      ['Hear → reflect → contemplate: śravaṇa → manana → nididhyāsana (Bṛhadāraṇyaka 2.4.5).', 'श्रवण → मनन → निदिध्यासन (बृहदारण्यक 2.4.5)।', 'શ્રવણ → મનન → નિદિધ્યાસન (બૃહદારણ્યક 2.4.5).', 'श्रवण → मनन → निदिध्यासन (बृहदारण्यक 2.4.5).']
+    ],
+    verse: { sa: 'तद्विद्धि प्रणिपातेन परिप्रश्नेन सेवया। उपदेक्ष्यन्ति ते ज्ञानं ज्ञानिनस्तत्त्वदर्शिनः॥', ro: 'tad viddhi praṇipātena paripraśnena sevayā | upadekṣyanti te jñānaṃ jñāninas tattva-darśinaḥ ||', src: 'Bhagavad Gītā 4.34',
+      mean: ['Learn it by bowing, by asking, by serving. The wise, who have seen the truth, will teach you.', 'प्रणाम से, प्रश्न से, सेवा से इसे जानो। तत्त्व को देख चुके ज्ञानी तुम्हें यह ज्ञान देंगे।', 'પ્રણામથી, પ્રશ્નથી, સેવાથી તેને જાણો. તત્ત્વને જોઈ ચૂકેલા જ્ઞાનીઓ તમને આ જ્ઞાન આપશે.', 'नमस्काराने, प्रश्नाने, सेवेने ते जाणा. तत्त्व पाहिलेले ज्ञानी तुम्हाला हे ज्ञान देतील.'] },
+    story: { id: 'story_seeker', src: 'Kaṭha Upaniṣad 1.1–1.2', title: ['Nachiketa chooses the good', 'नचिकेता श्रेय चुनता है', 'નચિકેતા શ્રેય પસંદ કરે છે', 'नचिकेत श्रेय निवडतो'] } };
+
+  var CH_SATCHIT = { id: 'satchit', widget: 'satchit',
+    title: ['Sat · Chit · Ānanda', 'सत् · चित् · आनंद', 'સત્ · ચિત્ · આનંદ', 'सत् · चित् · आनंद'],
+    intro: [
+      'Sat-cit-ānanda defines Brahman by its own nature (svarūpa lakṣaṇa): existence, awareness, fullness. Taittirīya 2.1 says it as satyaṃ jñānam anantaṃ brahma. Everything seen (anātmā) is its opposite: changing (asat), inert (jaḍa) and limited (duḥkha). Dṛg-dṛśya-viveka 20 finds the same in every object: of its five aspects, asti, bhāti and priya are Brahman; nāma and rūpa are the world.',
+      'सत्-चित्-आनंद ब्रह्म का उसके स्वरूप से लक्षण है (स्वरूप लक्षण): अस्तित्व, चेतना, पूर्णता। तैत्तिरीय 2.1 इसे कहता है: सत्यं ज्ञानम् अनन्तं ब्रह्म। जो कुछ दिखता है (अनात्मा) वह इसका उल्टा है: परिवर्तनशील (असत्), जड़, और सीमित (दुःख)। दृग्-दृश्य-विवेक 20 हर वस्तु में यही दिखाता है: पाँच अंशों में अस्ति, भाति, प्रिय ब्रह्म हैं; नाम और रूप जगत।',
+      'સત્-ચિત્-આનંદ બ્રહ્મનું તેના સ્વરૂપથી લક્ષણ છે (સ્વરૂપ લક્ષણ): અસ્તિત્વ, ચેતના, પૂર્ણતા. તૈત્તિરીય 2.1 તેને કહે છે: સત્યં જ્ઞાનમ્ અનન્તં બ્રહ્મ. જે કંઈ દેખાય છે (અનાત્મા) તે તેનું ઊલટું છે: પરિવર્તનશીલ (અસત્), જડ, અને સીમિત (દુઃખ). દૃગ્-દૃશ્ય-વિવેક 20 દરેક વસ્તુમાં આ જ બતાવે છે: પાંચ અંશમાં અસ્તિ, ભાતિ, પ્રિય બ્રહ્મ છે; નામ અને રૂપ જગત.',
+      'सत्-चित्-आनंद हे ब्रह्माचे त्याच्या स्वरूपाने लक्षण आहे (स्वरूप लक्षण): अस्तित्व, चेतना, पूर्णता. तैत्तिरीय 2.1 हे सांगते: सत्यं ज्ञानम् अनन्तं ब्रह्म. जे काही दिसते (अनात्मा) ते याच्या उलट आहे: बदलणारे (असत्), जड, आणि मर्यादित (दुःख). दृग्-दृश्य-विवेक 20 प्रत्येक वस्तूत हेच दाखवतो: पाच अंशांपैकी अस्ति, भाति, प्रिय हे ब्रह्म; नाम आणि रूप हे जग.'],
+    remember: [
+      ['Sat = always is (asti) · Chit = knows, shines (bhāti) · Ānanda = fullness, dear (priya).', 'सत् = सदा है (अस्ति) · चित् = जानता है, भासता है (भाति) · आनंद = पूर्णता, प्रिय।', 'સત્ = સદા છે (અસ્તિ) · ચિત્ = જાણે છે, ભાસે છે (ભાતિ) · આનંદ = પૂર્ણતા, પ્રિય.', 'सत् = सदैव आहे (अस्ति) · चित् = जाणते, भासते (भाति) · आनंद = पूर्णता, प्रिय.'],
+      ['Is + shines + dear = Brahman. Name + form = world.', 'है + भासता + प्रिय = ब्रह्म। नाम + रूप = जगत।', 'છે + ભાસે + પ્રિય = બ્રહ્મ. નામ + રૂપ = જગત.', 'आहे + भासते + प्रिय = ब्रह्म. नाम + रूप = जग.'],
+      ['The bliss sheath is not Ānanda. It is Ānanda reflected in a still mind, like the sun in still water.', 'आनंदमय कोश आनंद नहीं है। वह शांत मन में आनंद का प्रतिबिंब है, जैसे शांत जल में सूर्य।', 'આનંદમય કોશ આનંદ નથી. તે શાંત મનમાં આનંદનું પ્રતિબિંબ છે, જેમ શાંત પાણીમાં સૂર્ય.', 'आनंदमय कोश म्हणजे आनंद नव्हे. ते शांत मनातील आनंदाचे प्रतिबिंब आहे, जसा शांत पाण्यात सूर्य.'],
+      ['Taṭastha lakṣaṇa: Brahman as the cause of the world. Svarūpa lakṣaṇa: Brahman as it is.', 'तटस्थ लक्षण: जगत के कारण के रूप में ब्रह्म। स्वरूप लक्षण: ब्रह्म जैसा है।', 'તટસ્થ લક્ષણ: જગતના કારણ રૂપે બ્રહ્મ. સ્વરૂપ લક્ષણ: બ્રહ્મ જેવું છે તેવું.', 'तटस्थ लक्षण: जगाचे कारण म्हणून ब्रह्म. स्वरूप लक्षण: ब्रह्म जसे आहे तसे.']
+    ],
+    verse: { sa: 'अस्ति भाति प्रियं रूपं नाम चेत्यंशपञ्चकम्। आद्यत्रयं ब्रह्मरूपं जगद्रूपं ततो द्वयम्॥', ro: 'asti bhāti priyaṃ rūpaṃ nāma cety aṃśa-pañcakam | ādya-trayaṃ brahma-rūpaṃ jagad-rūpaṃ tato dvayam ||', src: 'Dṛg-dṛśya-viveka 20',
+      mean: ['Is, shines, dear, form and name: these are the five aspects. The first three are Brahman; the last two are the world.', 'अस्ति, भाति, प्रिय, रूप और नाम: ये पाँच अंश हैं। पहले तीन ब्रह्म का रूप हैं; अंतिम दो जगत का।', 'અસ્તિ, ભાતિ, પ્રિય, રૂપ અને નામ: આ પાંચ અંશ છે. પહેલા ત્રણ બ્રહ્મનું રૂપ છે; છેલ્લા બે જગતનું.', 'अस्ति, भाति, प्रिय, रूप आणि नाम: हे पाच अंश. पहिले तीन ब्रह्माचे रूप; शेवटचे दोन जगाचे.'] },
+    story: { id: 'story_satchit', src: 'Kena Upaniṣad 3–4', title: ['The yaksha and the blade of grass', 'यक्ष और तिनका', 'યક્ષ અને તણખલું', 'यक्ष आणि गवताची काडी'] } };
+
+  var CH_OMTATSAT = { id: 'omtatsat', widget: 'omtatsat',
+    title: ['Om Tat Sat and the great sayings', 'ॐ तत् सत् और महावाक्य', 'ૐ તત્ સત્ અને મહાવાક્યો', 'ॐ तत् सत् आणि महावाक्ये'],
+    intro: [
+      'Gītā 17.23–28 names Brahman three ways: Om, Tat, Sat. Om opens every sacrifice, gift and austerity; Tat marks action done without seeking its fruit; Sat means both what is real and what is good. The four mahāvākyas, one from each Veda, state the same truth directly. Tat tvam asi is understood by dropping what differs in Īśvara and the jīva and keeping the awareness common to both (bhāga-tyāga lakṣaṇā). The whole of Pañcīkaraṇa follows adhyāropa-apavāda: first the world is laid on, then it is taken back.',
+      'गीता 17.23–28 ब्रह्म को तीन नामों से बताती है: ॐ, तत्, सत्। ॐ से हर यज्ञ, दान और तप आरंभ होता है; तत् उस कर्म को दर्शाता है जो फल की इच्छा के बिना किया जाए; सत् का अर्थ है जो वास्तविक है और जो शुभ है। चार महावाक्य, हर वेद से एक, यही सत्य सीधे कहते हैं। तत् त्वम् असि को ईश्वर और जीव में जो भिन्न है उसे छोड़कर और दोनों में समान चेतना को रखकर समझा जाता है (भाग-त्याग लक्षणा)। पूरा पंचीकरण अध्यारोप-अपवाद की पद्धति पर चलता है: पहले जगत आरोपित, फिर वापस लिया जाता है।',
+      'ગીતા 17.23–28 બ્રહ્મને ત્રણ નામથી ઓળખાવે છે: ૐ, તત્, સત્. ૐથી દરેક યજ્ઞ, દાન અને તપ શરૂ થાય છે; તત્ ફળની ઇચ્છા વગર કરેલા કર્મને દર્શાવે છે; સત્ એટલે જે વાસ્તવિક છે અને જે શુભ છે. ચાર મહાવાક્યો, દરેક વેદમાંથી એક, આ જ સત્ય સીધું કહે છે. તત્ ત્વમ્ અસિ ઈશ્વર અને જીવમાં જે ભિન્ન છે તે છોડીને અને બંનેમાં સમાન ચેતના રાખીને સમજાય છે (ભાગ-ત્યાગ લક્ષણા). આખું પંચીકરણ અધ્યારોપ-અપવાદની પદ્ધતિએ ચાલે છે: પહેલાં જગત આરોપિત, પછી પાછું લેવાય છે.',
+      'गीता 17.23–28 ब्रह्माला तीन नावांनी दर्शवते: ॐ, तत्, सत्. ॐ ने प्रत्येक यज्ञ, दान आणि तप सुरू होते; तत् फळाची इच्छा न ठेवता केलेले कर्म दर्शवते; सत् म्हणजे जे वास्तव आहे आणि जे शुभ आहे. चार महावाक्ये, प्रत्येक वेदातून एक, हेच सत्य थेट सांगतात. तत् त्वम् असि हे ईश्वर आणि जीव यांतील भिन्न भाग सोडून आणि दोघांतील समान चेतना ठेवून समजते (भाग-त्याग लक्षणा). संपूर्ण पंचीकरण अध्यारोप-अपवाद पद्धतीने चालते: आधी जग आरोपित, मग परत घेतले जाते.'],
+    remember: [
+      ['Prajñānaṃ brahma (Aitareya · Ṛg) · Ahaṃ brahmāsmi (Bṛhadāraṇyaka · Yajur) · Tat tvam asi (Chāndogya · Sāma) · Ayam ātmā brahma (Māṇḍūkya · Atharva).', 'प्रज्ञानं ब्रह्म (ऐतरेय · ऋग्) · अहं ब्रह्मास्मि (बृहदारण्यक · यजुर्) · तत् त्वम् असि (छांदोग्य · साम) · अयम् आत्मा ब्रह्म (मांडूक्य · अथर्व)।', 'પ્રજ્ઞાનં બ્રહ્મ (ઐતરેય · ઋગ્) · અહં બ્રહ્માસ્મિ (બૃહદારણ્યક · યજુર્) · તત્ ત્વમ્ અસિ (છાંદોગ્ય · સામ) · અયમ્ આત્મા બ્રહ્મ (માંડૂક્ય · અથર્વ).', 'प्रज्ञानं ब्रह्म (ऐतरेय · ऋग्) · अहं ब्रह्मास्मि (बृहदारण्यक · यजुर्) · तत् त्वम् असि (छांदोग्य · साम) · अयम् आत्मा ब्रह्म (मांडूक्य · अथर्व).'],
+      ['Om → begin with it. Tat → act without the fruit. Sat → real and good. Without faith → asat.', 'ॐ → इससे आरंभ। तत् → फल के बिना कर्म। सत् → वास्तविक और शुभ। श्रद्धा के बिना → असत्।', 'ૐ → તેનાથી શરૂઆત. તત્ → ફળ વગર કર્મ. સત્ → વાસ્તવિક અને શુભ. શ્રદ્ધા વગર → અસત્.', 'ॐ → याने सुरुवात. तत् → फळाशिवाय कर्म. सत् → वास्तव आणि शुभ. श्रद्धेशिवाय → असत्.'],
+      ['"This is that Devadatta" (so \'yaṃ devadattaḥ): drop the then-and-there and the here-and-now, keep the person.', '"यह वही देवदत्त है" (सोऽयं देवदत्तः): तब-वहाँ और अब-यहाँ छोड़ दो, व्यक्ति को रखो।', '"આ એ જ દેવદત્ત છે" (સોऽયં દેવદત્તઃ): ત્યારે-ત્યાં અને અત્યારે-અહીં છોડી દો, વ્યક્તિને રાખો.', '"हा तोच देवदत्त" (सोऽयं देवदत्तः): तेव्हा-तिथे आणि आता-इथे सोडा, व्यक्ती ठेवा.']
+    ],
+    verse: { sa: 'ॐ तत्सदिति निर्देशो ब्रह्मणस्त्रिविधः स्मृतः। ब्राह्मणास्तेन वेदाश्च यज्ञाश्च विहिताः पुरा॥', ro: 'oṃ tat sad iti nirdeśo brahmaṇas tri-vidhaḥ smṛtaḥ | brāhmaṇās tena vedāś ca yajñāś ca vihitāḥ purā ||', src: 'Bhagavad Gītā 17.23',
+      mean: ['"Om Tat Sat": this is the threefold name of Brahman. By it, of old, the knowers, the Vedas and the sacrifices were ordained.', '"ॐ तत् सत्": यह ब्रह्म का त्रिविध नाम है। इसी से प्राचीन काल में ब्राह्मण, वेद और यज्ञ रचे गए।', '"ૐ તત્ સત્": આ બ્રહ્મનું ત્રિવિધ નામ છે. તેનાથી જ પ્રાચીન કાળમાં બ્રાહ્મણ, વેદ અને યજ્ઞ રચાયા.', '"ॐ तत् सत्": हे ब्रह्माचे त्रिविध नाव आहे. यानेच प्राचीन काळी ब्राह्मण, वेद आणि यज्ञ निर्माण झाले.'] } };
+
+  /* ---------- Stories, verses and extra notes for existing chapters ---------- */
+  var EXTRA = {
+    origin: {
+      story: { id: 'story_origin', src: 'Chāndogya Upaniṣad 6', title: ['Uddālaka teaches Śvetaketu', 'उद्दालक श्वेतकेतु को सिखाते हैं', 'ઉદ્દાલક શ્વેતકેતુને શીખવે છે', 'उद्दालक श्वेतकेतूला शिकवतात'] },
+      verse: { sa: 'तस्माद्वा एतस्मादात्मन आकाशः सम्भूतः। आकाशाद्वायुः। वायोरग्निः। अग्नेरापः। अद्भ्यः पृथिवी॥', ro: 'tasmād vā etasmād ātmana ākāśaḥ sambhūtaḥ | ākāśād vāyuḥ | vāyor agniḥ | agner āpaḥ | adbhyaḥ pṛthivī ||', src: 'Taittirīya Upaniṣad 2.1',
+        mean: ['From this Self, space arose; from space, air; from air, fire; from fire, water; from water, earth.', 'इसी आत्मा से आकाश उत्पन्न हुआ; आकाश से वायु; वायु से अग्नि; अग्नि से जल; जल से पृथ्वी।', 'આ જ આત્મામાંથી આકાશ ઉત્પન્ન થયું; આકાશમાંથી વાયુ; વાયુમાંથી અગ્નિ; અગ્નિમાંથી જળ; જળમાંથી પૃથ્વી.', 'याच आत्म्यापासून आकाश उत्पन्न झाले; आकाशापासून वायू; वायूपासून अग्नी; अग्नीपासून जल; जलापासून पृथ्वी.'] },
+      remember: [['Māyā has two powers: āvaraṇa veils (the rope is not seen) and vikṣepa projects (a snake is seen).', 'माया की दो शक्तियाँ: आवरण ढकती है (रस्सी नहीं दिखती) और विक्षेप दिखाती है (साँप दिखता है)।', 'માયાની બે શક્તિ: આવરણ ઢાંકે છે (દોરડું દેખાતું નથી) અને વિક્ષેપ દેખાડે છે (સાપ દેખાય છે).', 'मायेच्या दोन शक्ती: आवरण झाकते (दोरी दिसत नाही) आणि विक्षेप दाखवते (साप दिसतो).']] },
+    gunas: {
+      remember: [['The Trimūrti and the guṇas: Brahmā (rajas) creates, Viṣṇu (sattva) sustains, Rudra (tamas) dissolves.', 'त्रिमूर्ति और गुण: ब्रह्मा (रजस्) सृष्टि करते हैं, विष्णु (सत्त्व) पालन, रुद्र (तमस्) संहार।', 'ત્રિમૂર્તિ અને ગુણ: બ્રહ્મા (રજસ્) સર્જન કરે છે, વિષ્ણુ (સત્ત્વ) પાલન, રુદ્ર (તમસ્) સંહાર.', 'त्रिमूर्ती आणि गुण: ब्रह्मा (रजस्) सृष्टी करतात, विष्णू (सत्त्व) पालन, रुद्र (तमस्) संहार.']] },
+    subtle: {
+      story: { id: 'story_subtle', src: 'Aitareya Upaniṣad 1.2', title: ['The gods enter the body', 'देवता शरीर में प्रवेश करते हैं', 'દેવતાઓ શરીરમાં પ્રવેશે છે', 'देवता शरीरात प्रवेश करतात'] },
+      remember: [
+        ['Every organ has three sides: adhyātma (the eye) · adhibhūta (the form it sees) · adhidaiva (Sūrya, by whose light it sees). In the dark the eye is still there, but there is no seeing.', 'हर इंद्रिय के तीन पक्ष: अध्यात्म (आँख) · अधिभूत (दिखने वाला रूप) · अधिदैव (सूर्य, जिसके प्रकाश से देखती है)। अँधेरे में आँख रहती है, पर देखना नहीं होता।', 'દરેક ઇન્દ્રિયનાં ત્રણ પાસાં: અધ્યાત્મ (આંખ) · અધિભૂત (દેખાતું રૂપ) · અધિદૈવ (સૂર્ય, જેના પ્રકાશથી જુએ છે). અંધારામાં આંખ રહે છે, પણ જોવાનું થતું નથી.', 'प्रत्येक इंद्रियाचे तीन पैलू: अध्यात्म (डोळा) · अधिभूत (दिसणारे रूप) · अधिदैव (सूर्य, ज्याच्या प्रकाशाने पाहतो). अंधारात डोळा असतो, पण पाहणे होत नाही.'],
+        ['Aitareya\'s list differs a little from the Pañcīkaraṇa table (for example plants for the skin, Death for apāna). Follow your book\'s table.', 'ऐतरेय की सूची पंचीकरण की तालिका से थोड़ी भिन्न है (जैसे त्वचा के लिए औषधियाँ, अपान के लिए मृत्यु)। अपने ग्रंथ की तालिका का अनुसरण करें।', 'ઐતરેયની યાદી પંચીકરણના કોષ્ટકથી થોડી જુદી છે (જેમ ત્વચા માટે ઔષધિઓ, અપાન માટે મૃત્યુ). તમારા ગ્રંથના કોષ્ટકને અનુસરો.', 'ऐतरेयची यादी पंचीकरणाच्या तालिकेपेक्षा थोडी वेगळी आहे (उदा. त्वचेसाठी औषधी, अपानासाठी मृत्यू). आपल्या ग्रंथाच्या तालिकेचे अनुसरण करा.']
+      ] },
+    inner: {
+      story: { id: 'story_inner', src: 'Kaṭha Upaniṣad 1.3.3–9', title: ['The chariot', 'रथ', 'રથ', 'रथ'] },
+      verse: { sa: 'आत्मानं रथिनं विद्धि शरीरं रथमेव तु। बुद्धिं तु सारथिं विद्धि मनः प्रग्रहमेव च॥', ro: 'ātmānaṃ rathinaṃ viddhi śarīraṃ ratham eva tu | buddhiṃ tu sārathiṃ viddhi manaḥ pragraham eva ca ||', src: 'Kaṭha Upaniṣad 1.3.3',
+        mean: ['Know the Self as the rider and the body as the chariot. Know the intellect as the charioteer and the mind as the reins.', 'आत्मा को रथी जानो और शरीर को रथ। बुद्धि को सारथी जानो और मन को लगाम।', 'આત્માને રથી જાણો અને શરીરને રથ. બુદ્ધિને સારથિ જાણો અને મનને લગામ.', 'आत्मा रथी जाणा आणि शरीर रथ. बुद्धी सारथी जाणा आणि मन लगाम.'] },
+      remember: [['Their presiding deities: manas – Candra, buddhi – Brahmā, citta – Vāsudeva (Viṣṇu), ahaṅkāra – Rudra. The Trimūrti appear here inside you.', 'इनके अधिष्ठाता देवता: मन – चंद्र, बुद्धि – ब्रह्मा, चित्त – वासुदेव (विष्णु), अहंकार – रुद्र। त्रिमूर्ति यहाँ आपके भीतर हैं।', 'તેમના અધિષ્ઠાતા દેવતા: મન – ચંદ્ર, બુદ્ધિ – બ્રહ્મા, ચિત્ત – વાસુદેવ (વિષ્ણુ), અહંકાર – રુદ્ર. ત્રિમૂર્તિ અહીં તમારી અંદર છે.', 'यांच्या अधिष्ठाता देवता: मन – चंद्र, बुद्धी – ब्रह्मा, चित्त – वासुदेव (विष्णू), अहंकार – रुद्र. त्रिमूर्ती इथे तुमच्या आत आहेत.']] },
+    pranas: {
+      story: { id: 'story_pranas', src: 'Praśna Upaniṣad 2', title: ['The senses quarrel', 'इंद्रियों का विवाद', 'ઇન્દ્રિયોનો વિવાદ', 'इंद्रियांचा वाद'] } },
+    bodies: {
+      story: { id: 'story_bodies', src: 'Chāndogya Upaniṣad 8.7–12', title: ['Indra and Virochana', 'इंद्र और विरोचन', 'ઇન્દ્ર અને વિરોચન', 'इंद्र आणि विरोचन'] } },
+    koshas: {
+      story: { id: 'story_koshas', src: 'Taittirīya Upaniṣad 3', title: ['Bhṛgu asks his father', 'भृगु पिता से पूछते हैं', 'ભૃગુ પિતાને પૂછે છે', 'भृगु वडिलांना विचारतात'] },
+      verse: { sa: 'आनन्दो ब्रह्मेति व्यजानात्।', ro: 'ānando brahmeti vyajānāt |', src: 'Taittirīya Upaniṣad 3.6',
+        mean: ['He knew: Ānanda is Brahman.', 'उन्होंने जाना: आनंद ब्रह्म है।', 'તેમણે જાણ્યું: આનંદ બ્રહ્મ છે.', 'त्यांनी जाणले: आनंद ब्रह्म आहे.'] },
+      remember: [['Bhṛgu\'s path is the five sheaths: anna → prāṇa → manas → vijñāna → ānanda.', 'भृगु का मार्ग ही पाँच कोश हैं: अन्न → प्राण → मन → विज्ञान → आनंद।', 'ભૃગુનો માર્ગ જ પાંચ કોશ છે: અન્ન → પ્રાણ → મન → વિજ્ઞાન → આનંદ.', 'भृगूंचा मार्ग म्हणजेच पाच कोश: अन्न → प्राण → मन → विज्ञान → आनंद.']] },
+    witness: {
+      story: { id: 'story_witness', src: 'Pañcadaśī 7', title: ['The tenth man', 'दसवाँ व्यक्ति', 'દસમો માણસ', 'दहावा माणूस'] },
+      verse: { sa: 'रूपं दृश्यं लोचनं दृक् तद्दृश्यं दृक्तु मानसम्। दृश्या धीवृत्तयः साक्षी दृगेव न तु दृश्यते॥', ro: 'rūpaṃ dṛśyaṃ locanaṃ dṛk tad dṛśyaṃ dṛk tu mānasam | dṛśyā dhī-vṛttayaḥ sākṣī dṛg eva na tu dṛśyate ||', src: 'Dṛg-dṛśya-viveka 1',
+        mean: ['Form is seen, the eye sees. The eye is seen, the mind sees. The thoughts are seen; the witness is the seer and is never seen.', 'रूप दृश्य है, आँख द्रष्टा। आँख दृश्य है, मन द्रष्टा। मन की वृत्तियाँ दृश्य हैं; साक्षी केवल द्रष्टा है, कभी दृश्य नहीं।', 'રૂપ દૃશ્ય છે, આંખ દ્રષ્ટા. આંખ દૃશ્ય છે, મન દ્રષ્ટા. મનની વૃત્તિઓ દૃશ્ય છે; સાક્ષી માત્ર દ્રષ્ટા છે, ક્યારેય દૃશ્ય નહીં.', 'रूप दृश्य आहे, डोळा द्रष्टा. डोळा दृश्य आहे, मन द्रष्टा. मनाच्या वृत्ती दृश्य आहेत; साक्षी केवळ द्रष्टा आहे, कधीच दृश्य नाही.'] },
+      remember: [
+        ['The lamp on the stage (Pañcadaśī 10) lights the actors, the audience and the empty stage alike, and is not moved by the play.', 'रंगमंच का दीपक (पंचदशी 10) अभिनेताओं, दर्शकों और खाली मंच को समान रूप से प्रकाशित करता है, और नाटक से प्रभावित नहीं होता।', 'રંગમંચનો દીવો (પંચદશી 10) અભિનેતાઓ, પ્રેક્ષકો અને ખાલી મંચને સમાન રીતે પ્રકાશિત કરે છે, અને નાટકથી પ્રભાવિત થતો નથી.', 'रंगमंचावरील दिवा (पंचदशी 10) नट, प्रेक्षक आणि रिकामा रंगमंच यांना सारखाच प्रकाशित करतो, आणि नाटकाने विचलित होत नाही.'],
+        ['A clear crystal beside a red flower looks red. The Self beside the mind looks happy or sad, but is neither.', 'लाल फूल के पास स्वच्छ स्फटिक लाल दिखता है। मन के पास आत्मा सुखी या दुःखी दिखता है, पर वह दोनों में से कुछ नहीं।', 'લાલ ફૂલ પાસે સ્વચ્છ સ્ફટિક લાલ દેખાય છે. મન પાસે આત્મા સુખી કે દુઃખી દેખાય છે, પણ તે બેમાંથી કંઈ નથી.', 'लाल फुलाजवळ स्वच्छ स्फटिक लाल दिसतो. मनाजवळ आत्मा सुखी किंवा दुःखी दिसतो, पण तो यापैकी काहीच नाही.'],
+        ['Neti neti: whatever can be pointed to as "this" is not the Self.', 'नेति नेति: जिसे "यह" कहकर दिखाया जा सके, वह आत्मा नहीं।', 'નેતિ નેતિ: જેને "આ" કહીને બતાવી શકાય, તે આત્મા નથી.', 'नेति नेति: ज्याला "हे" म्हणून दाखवता येते, तो आत्मा नव्हे.']
+      ] },
+    'return': {
+      story: { id: 'story_return', src: 'Māṇḍūkya Kārikā 3.3–6', title: ['The space in the pot', 'घड़े का आकाश', 'ઘડાનું આકાશ', 'घड्यातील आकाश'] },
+      verse: { sa: 'अमात्रश्चतुर्थोऽव्यवहार्यः प्रपञ्चोपशमः शिवोऽद्वैत एवमोङ्कार आत्मैव॥', ro: 'amātraś caturtho \'vyavahāryaḥ prapañcopaśamaḥ śivo \'dvaita evam oṅkāra ātmaiva ||', src: 'Māṇḍūkya Upaniṣad 12',
+        mean: ['The partless fourth is beyond all dealings, the stilling of the world, peaceful, one without a second. So Om is the Self itself.', 'मात्रारहित चौथा व्यवहार से परे है, प्रपंच का शमन, शिव, अद्वैत। इस प्रकार ॐ स्वयं आत्मा ही है।', 'માત્રારહિત ચોથું વ્યવહારથી પર છે, પ્રપંચનું શમન, શિવ, અદ્વૈત. આ રીતે ૐ પોતે આત્મા જ છે.', 'मात्रारहित चौथे व्यवहाराच्या पलीकडे आहे, प्रपंचाचे शमन, शिव, अद्वैत. अशा प्रकारे ॐ स्वतः आत्माच आहे.'] } }
+  };
+
+  // Assemble: the seeker first, Sat-Chit-Ānanda before the witness, Om Tat Sat at the end.
+  CHAPTERS.forEach(function (c) {
+    var x = EXTRA[c.id]; if (!x) return;
+    if (x.story) c.story = x.story;
+    if (x.verse) c.verse = x.verse;
+    if (x.remember) c.remember = (c.remember || []).concat(x.remember);
+  });
+  CHAPTERS.unshift(CH_SEEKER);
+  for (var wi = 0; wi < CHAPTERS.length; wi++) if (CHAPTERS[wi].id === 'witness') { CHAPTERS.splice(wi, 0, CH_SATCHIT); break; }
+  CHAPTERS.push(CH_OMTATSAT);
+
   window.PK = {
     TERMS: TERMS, ELEMENTS: ELEMENTS, ANTAH: ANTAH, PRANAS: PRANAS, UPAPRANAS: UPAPRANAS,
-    BODIES: BODIES, BODY_ROWS: BODY_ROWS, KOSHAS: KOSHAS, CHAPTERS: CHAPTERS
+    BODIES: BODIES, BODY_ROWS: BODY_ROWS, KOSHAS: KOSHAS, CHAPTERS: CHAPTERS, SADHANA: SADHANA
   };
 })();

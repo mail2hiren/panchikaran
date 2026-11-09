@@ -483,6 +483,8 @@
   window.SCENES = {
     origin: origin, gunas: gunas, panchikarana: pk, gross: gross, subtle: subtle, inner: inner,
     pranas: pranas, bodies: bodies, koshas: koshas, witness: witness, laya: laya,
-    hero: hero, map: mapScene, figure: figure, svg: svg
+    hero: hero, map: mapScene, figure: figure, svg: svg,
+    _k: { figure: figure, svg: svg, label: label, marker: marker, glowAt: glowAt, orb: orb, flow: flow, particles: particles, bigLetter: bigLetter,
+      ct: ct, arrow: arrow, sky: sky, cloud: cloud, P: P, GOLD: GOLD, SAT: SAT, RAJ: RAJ, TAM: TAM }
   };
 })();

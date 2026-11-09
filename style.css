@@ -435,3 +435,42 @@ body.noscroll { overflow: hidden; }
 #pvoice { color: var(--accent); }
 #pvoice.off { color: var(--muted); }
 .player.zoomed .sub { max-height: 22vh; overflow: auto; }
+
+/* ---------- v2: story tabs, verse card, new scene pieces ---------- */
+.ptabs { display: flex; gap: 6px; margin: 12px 0 0; overflow-x: auto; scrollbar-width: none; }
+.ptabs::-webkit-scrollbar { display: none; }
+.ptabs button { flex: none; max-width: 78%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font: inherit; font-size: .92rem; font-weight: 600; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer; }
+.ptabs button.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.ptabs .st-ic { opacity: .8; }
+.player.isstory { border-color: var(--accent); }
+.storysrc { margin: 6px 4px 0; font-size: .82rem; color: var(--muted); text-align: right; font-style: italic; }
+.verse { margin: 14px 0 0; padding: 16px 18px; background: var(--accent-soft); border-radius: var(--radius); border-left: 4px solid var(--accent); }
+.verse blockquote { margin: 0; font-family: var(--font-sa-serif, var(--font-sa)); font-size: 1.15rem; line-height: 1.7; color: var(--ink); }
+.verse .ro { margin: 6px 0 0; font-style: italic; color: var(--muted); font-size: .9rem; }
+.verse figcaption { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; font-size: .95rem; }
+.verse cite { font-size: .8rem; color: var(--accent); font-style: normal; font-weight: 600; }
+.grid tr.grp th { background: var(--accent-soft); text-align: left; }
+
+.bsym { font-size: 30px; font-weight: 800; }
+.tiny { font-size: 12px; font-weight: 800; }
+.musicnote { font-size: 34px; fill: #B0569B; }
+.sk { font-family: var(--font-sa); font-size: 38px; font-weight: 700; fill: var(--accent); }
+.sk.huge { font-size: 76px; }
+.card-r { fill: var(--surface); stroke-width: 3; }
+.lbl.faint { opacity: .45; }
+.lbl.steplbl { fill: #fff; stroke: none; font-size: 13px; font-weight: 700; }
+.lbl.lbl-xl { font-size: 28px; font-weight: 700; }
+@keyframes driftAway { from { opacity: 1; transform: translate(0, 0); } to { opacity: .2; transform: translate(-20px, -26px); } }
+@keyframes flicker { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(.9, 1.12); } }
+@keyframes slide { 0%, 100% { transform: translateX(-60px); } 50% { transform: translateX(60px); } }
+@keyframes shard { from { opacity: 1; transform: translate(0, 0) rotate(0); } to { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(160deg); } }
+@keyframes expandSoft { from { transform: scale(1); opacity: .9; } to { transform: scale(9); opacity: .35; } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+.driftaway { animation: driftAway 2.2s .4s ease-out both; }
+.flicker { animation: flicker .9s ease-in-out infinite; transform-origin: center bottom; }
+.slide { animation: slide 4s ease-in-out infinite; }
+.shard { animation: shard 1.6s .3s ease-out both; }
+.expand-soft { animation: expandSoft 2.2s .4s ease-out both; }
+.bob { animation: bob 3s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .driftaway, .flicker, .slide, .shard, .expand-soft, .bob { animation-duration: .01s; animation-iteration-count: 1; } }
+@media (max-width: 420px) { .dots { gap: 4px; } .dots button { width: 8px; height: 8px; } .dots button.on { width: 18px; } .pctl { gap: 6px; } }
