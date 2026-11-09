@@ -129,21 +129,30 @@
   }
 
   /* ---------- Chapter ---------- */
-  var TABLE_WIDGETS = { gross: 1, subtle: 1, pranas: 1, bodies: 1, panchikarana: 1, inner: 1 };
+  var TABLE_WIDGETS = { seeker: 1, gross: 1, subtle: 1, pranas: 1, bodies: 1, panchikarana: 1, inner: 1 };
   function viewChapter(id, hide) {
     var i = chapterIndex(id), c = PK.CHAPTERS[i], sc = window.SCENES[c.widget];
     S.visited[id] = 1; save('visited', S.visited);
     var h = '<article class="chapter"><p class="eyebrow">' + esc(ui('chapter')) + ' ' + (i + 1) + ' / ' + PK.CHAPTERS.length + '</p>' +
       '<h1>' + esc(tx(c.title)) + '</h1>';
+    if (c.story) {
+      h += '<div class="ptabs" role="tablist"><button role="tab" class="on" data-act="ptab" data-v="0">' + esc(ui('explain')) + '</button>' +
+        '<button role="tab" data-act="ptab" data-v="1"><span class="st-ic">❖</span> ' + esc(ui('story')) + ': ' + esc(tx(c.story.title)) + '</button></div>';
+    }
     h += '<div class="player" id="player"><button class="zclose round" data-act="zclose" aria-label="Close">✕</button>' +
       '<div class="stagewrap" id="stagewrap"><div class="stage" id="stage"></div><button class="zbtn" data-act="zopen" aria-label="' + esc(ui('zoom')) + '">⤢</button>' +
       '<button class="startov" data-act="pplay"><span class="pbig">▶</span><span>' + esc(ui('listen')) + '</span></button></div>' +
       '<div class="zhint">' + esc(ui('zoomHint')) + '</div><div class="cap" id="cap" aria-live="polite"></div><p class="sub" id="sub"></p>' +
       '<div class="pctl"><button class="round" data-act="pprev" aria-label="' + esc(ui('prev')) + '">‹</button>' +
-      '<div class="dots" id="dots">' + Array.apply(null, Array(sc.steps)).map(function (_, k) { return '<button data-act="pdot" data-v="' + k + '" aria-label="' + (k + 1) + '"></button>'; }).join('') + '</div>' +
+      '<div class="dots" id="dots"></div>' +
       '<button class="round" id="pvoice" data-act="voice" aria-label="' + esc(ui('voice')) + '"></button>' +
       '<button class="round" id="pplay" data-act="pplay" aria-label="' + esc(ui('play')) + '">▶</button>' +
       '<button class="round primary" data-act="pnext" aria-label="' + esc(ui('next')) + '">›</button></div></div>';
+    h += '<p class="storysrc" id="storysrc" hidden></p>';
+    if (c.verse) {
+      h += '<figure class="verse"><blockquote lang="sa">' + esc(script(c.verse.sa)) + '</blockquote>' + (S.roman ? '<p class="ro">' + esc(c.verse.ro) + '</p>' : '') +
+        '<figcaption><span>' + esc(tx(c.verse.mean)) + '</span><cite>' + esc(c.verse.src) + '</cite></figcaption></figure>';
+    }
     if (TABLE_WIDGETS[c.widget]) {
       h += '<details class="more"' + (hide ? ' open' : '') + '><summary>▦ ' + esc(ui('table')) + '</summary><div class="widget" data-widget="' + c.widget + '">' + WIDGETS[c.widget](hide) + '</div></details>';
     }
@@ -232,7 +241,7 @@
   var LANGTAG = { en: 'en-IN', hi: 'hi-IN', gu: 'gu-IN', mr: 'mr-IN' };
   var MALE = /(male|madhur|prabhat|niranjan|manohar|rishi|hemant|ravi|kunal|aarav|arjun|prakash|rahul)/i;
   try { fetch('audio/cues.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { VOICE.cues = j; }).catch(function () {}); } catch (e) { /* offline */ }
-  function narrText() { var n = window.NARR && window.NARR[PL.id]; return n && n[PL.step] ? tx(n[PL.step]) : ''; }
+  function narrText() { var n = window.NARR && window.NARR[PL.key]; return n && n[PL.step] ? tx(n[PL.step]) : ''; }
   function pickVoice() {
     if (!('speechSynthesis' in window)) return null;
     var tag = LANGTAG[S.lang], base = tag.slice(0, 2);
@@ -257,10 +266,10 @@
     function fin() { if (my === VOICE.token && done) done(); }
     function silent() { setTimeout(fin, Math.max(4200, text.length * 55)); }
     if (!VOICE.on || !text) return silent();
-    var cue = VOICE.cues && VOICE.cues[S.lang] && VOICE.cues[S.lang][PL.id];
+    var cue = VOICE.cues && VOICE.cues[S.lang] && VOICE.cues[S.lang][PL.key];
     if (cue && cue.t && cue.t[PL.step] !== undefined) {
       if (!VOICE.audio) VOICE.audio = new Audio();
-      var au = VOICE.audio, src = 'audio/' + S.lang + '/' + PL.id + '.mp3?v=' + (VOICE.cues.v || 1);
+      var au = VOICE.audio, src = 'audio/' + S.lang + '/' + PL.key + '.mp3?v=' + (VOICE.cues.v || 1);
       var start = cue.t[PL.step], end = cue.e[PL.step];
       var go2 = function () {
         try { au.currentTime = start; } catch (e) { /* not seekable yet */ }
@@ -283,8 +292,21 @@
   }
 
   /* ---------- Player: steps through a scene with narration ---------- */
-  var PL = { id: null, step: 0, playing: false, started: false };
-  function scene() { return window.SCENES[PK.CHAPTERS[chapterIndex(PL.id)].widget]; }
+  var PL = { id: null, key: null, sc: null, step: 0, playing: false, started: false };
+  function scene() { return PL.sc; }
+  function setScene(story) {
+    var c = PK.CHAPTERS[chapterIndex(PL.id)];
+    PL.key = story && c.story ? c.story.id : c.id;
+    PL.sc = window.SCENES[story && c.story ? c.story.id : c.widget];
+    PL.step = 0; PL.started = false; PL._ended = false;
+    var dots = document.getElementById('dots');
+    if (dots) dots.innerHTML = Array.apply(null, Array(PL.sc.steps)).map(function (_, k) { return '<button data-act="pdot" data-v="' + k + '" aria-label="' + (k + 1) + '"></button>'; }).join('');
+    var tabs = document.querySelectorAll('.ptabs button');
+    for (var i = 0; i < tabs.length; i++) { var on = (i === 1) === !!story; tabs[i].classList.toggle('on', on); tabs[i].setAttribute('aria-selected', on ? 'true' : 'false'); }
+    var src = document.getElementById('storysrc');
+    if (src) { src.hidden = !(story && c.story); if (story && c.story) src.textContent = ui('source') + ': ' + c.story.src; }
+    var pl = document.getElementById('player'); if (pl) pl.classList.toggle('isstory', !!story);
+  }
   function drawStep() {
     var st = document.getElementById('stage'), cp = document.getElementById('cap'); if (!st) return;
     var r = scene().render(PL.step);
@@ -303,7 +325,7 @@
       (on ? '<path d="M16 9a4 4 0 0 1 0 6"/><path d="M18.5 6.5a8 8 0 0 1 0 11"/>' : '<path d="M17 9l5 6M22 9l-5 6"/>') + '</svg>';
   }
   function startPlayer(id) {
-    stopPlayer(); PL.id = id; PL.step = 0; PL.started = false; drawStep();
+    stopPlayer(); PL.id = id; setScene(false); drawStep();
   }
   function play() {
     hush(); PL.playing = true; PL.started = true;
@@ -352,6 +374,15 @@
   /* ---------- Widgets ---------- */
   var WIDGETS = {};
 
+  WIDGETS.seeker = function (hide) {
+    var t = '<table class="grid wide"><thead><tr><th></th><th>' + esc(ui('meaning')) + '</th><th>' + esc(ui('image')) + '</th></tr></thead><tbody>';
+    var last = 0;
+    PK.SADHANA.forEach(function (q) {
+      if (q.n !== last) { last = q.n; if (q.n === 3) t += '<tr class="grp"><th colspan="3">3 · ' + term('shatsampatti') + '</th></tr>'; }
+      t += '<tr><th>' + (q.n !== 3 ? q.n + ' · ' : '') + term(q.id) + '</th><td class="m">' + esc(tx(q.mean)) + '</td><td class="m">' + esc(tx(q.img)) + '</td></tr>';
+    });
+    return memo(t + '</tbody></table>', hide);
+  };
   WIDGETS.origin = function () {
     var h = '<div class="chain"><div class="src">' + esc(ui('fromBrahman')) + '</div>';
     PK.ELEMENTS.forEach(function (e) {
@@ -550,6 +581,8 @@
       add('q_antahFn', a.id, { t: a.fn }, PK.ANTAH.map(function (x) { return { t: x.fn }; }));
       add('q_deity', a.id, { k: a.deity }, PK.ANTAH.map(function (x) { return { k: x.deity }; }));
     });
+    PK.SADHANA.forEach(function (q) { add('q_means', q.id, { t: q.mean }, PK.SADHANA.map(function (x) { return { t: x.mean }; })); });
+    [['asti', 'sat'], ['bhati', 'chit'], ['priya', 'ananda']].forEach(function (p) { add('q_abp', p[0], { k: p[1] }, [{ k: 'sat' }, { k: 'chit' }, { k: 'ananda' }]); });
     PK.PRANAS.forEach(function (p) { add('q_pranaSeat', p.id, { t: p.seat }, PK.PRANAS.map(function (x) { return { t: x.seat }; })); });
     PK.KOSHAS.forEach(function (k) { add('q_koshaBody', k.id, { k: k.body }, PK.BODIES.map(function (x) { return { k: x }; })); });
     var states = ['jagrat', 'svapna', 'sushupti'], jivas = ['vishva', 'taijasa', 'prajna'], cosmic = ['virat', 'hiranyagarbha', 'ishvara'], om = ['a', 'u', 'm'];
@@ -574,7 +607,7 @@
       '<a class="pcard" href="#/practice/cards"><span class="ic">⧉</span><h2>' + esc(ui('flashcards')) + '</h2><p>' + esc(ui('flashDesc')) + '</p></a>' +
       '<a class="pcard" href="#/practice/quiz"><span class="ic">?</span><h2>' + esc(ui('quiz')) + '</h2><p>' + esc(ui('quizDesc')) + '</p>' + (S.quizBest ? '<span class="best">' + esc(ui('best')) + ': ' + S.quizBest + '/10</span>' : '') + '</a></div>';
     h += '<h2 class="sub-h">' + esc(ui('tables')) + '</h2><p class="muted">' + esc(ui('tablesDesc')) + '</p><div class="tablelinks">' +
-      ['subtle', 'gross', 'pranas', 'bodies'].map(function (id) { return '<a class="btn" href="#/c/' + id + '/hide">' + esc(tx(PK.CHAPTERS[chapterIndex(id)].title)) + '</a>'; }).join('') + '</div>';
+      ['seeker', 'subtle', 'gross', 'pranas', 'bodies'].map(function (id) { return '<a class="btn" href="#/c/' + id + '/hide">' + esc(tx(PK.CHAPTERS[chapterIndex(id)].title)) + '</a>'; }).join('') + '</div>';
     return h;
   }
 
@@ -683,6 +716,7 @@
       case 'layareset': widgetState.laya = 0; rerenderWidget('laya'); break;
       case 'map': widgetState.map = v; render(); break;
       case 'pnext': go(PL.step + 1); break;
+      case 'ptab': stopPlayer(); setScene(v === 1); drawStep(); break;
       case 'zopen': openZoom(); break;
       case 'zclose': closeZoom(); break;
       case 'pprev': go(PL.step - 1); break;
